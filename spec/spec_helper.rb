@@ -1,3 +1,5 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'rspec'
+require 'polleverywhere'
+require 'ruby-debug'

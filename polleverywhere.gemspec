@@ -13,6 +13,8 @@ Gem::Specification.new do |s|
   s.description = %q{An easy way to integrate Poll Everywhere into your Ruby applications.}
 
   s.rubyforge_project = "polleverywhere"
+  s.add_dependency "json"
+  s.add_development_dependency "rest-client", "~> 1.6.3"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
