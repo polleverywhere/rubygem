@@ -13,23 +13,33 @@ module PollEverywhere
       end
 
       class Sync
-        attr_accessor :url
+        attr_accessor :request, :response
 
         def initialize
           yield self if block_given?
         end
-
+        
         def execute(request, &block)
+          @request = request
           # TODO get rid of the dependency for RestClient by sucking it up and using the Ruby HTTP client
-          RestClient::Request.execute(:method => request.method, :url => url_for(request.url), :payload => request.body, :headers => request.headers) do |r,_,_,_|
-            block.call Response.new(r.code, r.headers, r.body)
+          RestClient::Request.execute(:method => request.method, :url => request.url, :payload => request.body, :headers => request.headers) do |r,_,_,_|
+            @response = block.call Response.new(r.code, r.headers, r.body)
           end
         end
+      end
 
-      private
-        def url_for(path)
-          # TODO conditionally check if this is a path or full URL
-          "#{url}#{path}"
+      class Doc < Sync
+        def execute(request, &block)
+          requests << request
+          super request, &block
+        end
+
+        def requests
+          @requests ||= []
+        end
+
+        def last_requests
+          requests[(@last_request ||= 0)..(@last_request=requests.size)]
         end
       end
 
@@ -43,9 +53,10 @@ module PollEverywhere
           @requests ||= []
         end
       end
-      
-      self.register :sync, Sync
-      self.register :test, Test
+
+      self.register :sync,  Sync
+      self.register :doc,   Doc
+      self.register :test,  Test
     end
   end
 end

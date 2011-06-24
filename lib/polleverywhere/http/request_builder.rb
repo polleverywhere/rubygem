@@ -1,12 +1,15 @@
+require 'uri'
+
 module PollEverywhere
   module HTTP
     # DSL for building requests within our application that build a Request object and send them to 
     # an adapter to fulfill the request.
     class RequestBuilder
-      attr_accessor :method, :body, :headers, :params, :url, :format, :response, :adapter
+      attr_accessor :method, :body, :headers, :params, :url, :format, :response, :adapter, :base_url
 
-      def initialize(adapter=PollEverywhere.http_adapter)
+      def initialize(adapter=PollEverywhere.http_adapter, base_url=PollEverywhere.url)
         self.adapter = adapter
+        self.base_url = base_url
         self.headers = {'Content-Type' => 'application/json', 'Accept' => 'application/json'}
         yield self if block_given?
       end
@@ -44,10 +47,25 @@ module PollEverywhere
         self
       end
 
+      def request
+        Request.new(method, url_for(url), headers, body)
+      end
+
       # Generate a Request object, send it to an adapter, and have it fullfill the response by 
       # yielding a Response object.
       def response(&block)
-        adapter.execute Request.new(method, url, headers, body), &block
+        adapter.execute request, &block
+      end
+
+    private
+      # If a base_url is given, url_for can detect if a given .to is a path or URL, then
+      # setup the approriate URL for the request.
+      def url_for(uri)
+        if uri !~ /^http/ and base_url
+          "#{base_url}#{uri}"
+        else
+          uri
+        end
       end
     end
   end

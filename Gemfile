@@ -8,5 +8,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'growl'
   gem 'rspec'
-  gem 'ruby-debug'
+  gem 'haml'
+  gem 'rake'
+  gem 'ruby-debug19'
 end

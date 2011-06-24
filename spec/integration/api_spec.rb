@@ -2,12 +2,9 @@ require 'spec_helper'
 
 describe "API" do
   context "polls" do
-    
     context "multiple choice" do
       before(:all) do
         @mcp = PollEverywhere::MultipleChoicePoll.from_hash(:title => 'Hey dude!', :options => %w[red blue green])
-        @mcp.http = PollEverywhere::HTTP::RequestBuilder.new(
-          PollEverywhere::HTTP.adapter(:sync){|a| a.url = 'http://test:test@localhost:3000'})
       end
 
       context "creation" do
@@ -35,6 +32,13 @@ describe "API" do
               o.value.should_not be_nil
             end
           end
+        end
+      end
+
+      context "get" do
+        it "should get poll" do
+          @gotten_mcp = PollEverywhere::MultipleChoicePoll.get(@mcp.permalink)
+          @gotten_mcp.title.should eql(@mcp.title)
         end
       end
       

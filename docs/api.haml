@@ -1,0 +1,55 @@
+!!! html
+%html
+  %head
+    %title Poll Everywhere API
+  %body
+    %em Disclaimer: this documentation is only intended for an internal preview. Hold off on using this stuff until we announce it on our blog.
+
+    %h1 Getting Started with the Poll Everywhere API
+    %p This API assumes that you are familar with using low-level HTTP tools, like cURL, and are very familiar with the mechanics of HTTP.
+
+    %h1 Authentication
+    %p HTTP Basic authentication is currently used for logging into Poll Everywhere accounts.
+
+    %h1 Polls
+    %h2 Multiple choice polls
+    %h3 Creating a multiple choice poll
+    -@mcp = PollEverywhere::MultipleChoicePoll.from_hash(:title => 'Hey dude!', :options => %w[red blue green]).save
+    %code=examples @mcp
+
+    %h3 Changing the title of the multiple choice poll
+    -@mcp.title = "I like different titles"
+    -@mcp.save
+    %code=examples @mcp
+
+    %h3 Closing and opening multiple choice polls
+    %p To close a poll, change the state to "closed"
+    -@mcp.state = "closed"
+    -@mcp.save
+    %code=examples @mcp
+    
+    %p To open it back up (and allow responses to come on through) change the state to "opened"
+    -@mcp.state = "opened"
+    -@mcp.save
+    %code=examples @mcp
+
+    %h3 Delete a multiple choice poll
+    %p When you're totally finished with the poll and you want to tidy things up a bit, you can delete polls
+    -@mcp.destroy
+    %code=examples @mcp
+
+    %h2 Free text polls
+    %h3 Create free text polls
+    %p Creating a free text poll is similar to building a multiple choice poll, just without the options attribute.
+    -@ftp = PollEverywhere::FreeTextPoll.from_hash(:title => "What is the meaning of life?").save
+    %code=examples @ftp
+
+    %h3 Modify a free text poll
+    %p Change the title attribute to change the poll
+    -@ftp.state = "opened"
+    -@ftp.save
+    %code=examples @ftp
+    
+    %h3 Delete a free text poll
+    -@ftp.destroy
+    %code=examples @ftp

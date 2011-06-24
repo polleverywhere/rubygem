@@ -2,7 +2,16 @@ require 'spec_helper'
 
 describe "Service" do
   it "should have http://api.polleverywhere.com/ as url" do
-    PollEverywhere.service.url.to_s.should eql("http://api.polleverywhere.com/")
+    PollEverywhere.url.to_s.should eql("http://api.polleverywhere.com")
+  end
+end
+
+describe "documentation" do
+  it "should show curl format" do
+    poll = PollEverywhere::MultipleChoicePoll.new
+    poll.title = 'cool'
+    poll.options = %w[1 2 3]
+    poll.save
   end
 end
 
@@ -16,7 +25,7 @@ describe "Multiple Choice Poll" do
     context "serialization" do
       it "should serialize options" do
         @hash[:options].each do |value|
-          @poll.to_hash[:multiple_choice_poll][:options].find{|o| o[:value] == value }.should_not be_nil
+          @poll.to_hash[:multiple_choice_poll][:options].find{|o| o[:value] == value}.should_not be_nil
         end
       end
     end
@@ -37,6 +46,7 @@ end
 
 describe "http" do
   context "request builder" do
+
     # it "should post" do
     #   PollEverywhere::HTTP::RequestBuilder.new.post('some data').to('/this/url').response do |response|
     #     response.body.should eql('hello my pretty')
@@ -64,5 +74,6 @@ describe "http" do
     #     response.status.should eql(200)
     #   end
     # end
+
   end
 end
