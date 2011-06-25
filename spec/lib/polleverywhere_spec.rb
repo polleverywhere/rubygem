@@ -1,8 +1,31 @@
 require 'spec_helper'
 
-describe "Service" do
-  it "should have http://api.polleverywhere.com/ as url" do
-    PollEverywhere.url.to_s.should eql("http://api.polleverywhere.com")
+describe "Configuration" do
+  before(:all) do
+    @config = PollEverywhere::Configuration.new
+  end
+
+  %w[username password].each do |attr|
+    it "should have '#{attr}' configurable attribute" do
+      @config.send(attr, "test_val")
+      @config.send(attr).should eql("test_val")
+    end
+  end
+
+  context "url" do
+    it "should default to 'http://api.polleverywhere.com'" do
+      @config.url.to_s.should eql("http://api.polleverywhere.com")
+    end
+
+    it "should have URI instance for url configurable attribute" do
+      @config.url = "http://loser.com"
+      @config.url.to_s.should eql("http://loser.com")
+      @config.url.should be_instance_of(URI::HTTP)
+    end
+  end
+
+  it "should have a root configuration class" do
+    PollEverywhere.config.should be_instance_of(PollEverywhere::Configuration)
   end
 end
 

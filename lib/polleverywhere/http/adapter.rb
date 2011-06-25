@@ -22,7 +22,7 @@ module PollEverywhere
         def execute(request, &block)
           @request = request
           # TODO get rid of the dependency for RestClient by sucking it up and using the Ruby HTTP client
-          RestClient::Request.execute(:method => request.method, :url => request.url, :payload => request.body, :headers => request.headers) do |r,_,_,_|
+          RestClient::Request.execute(:method => request.method, :url => request.url.to_s, :payload => request.body, :headers => request.headers) do |r,_,_,_|
             @response = block.call Response.new(r.code, r.headers, r.body)
           end
         end

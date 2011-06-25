@@ -1,3 +1,5 @@
+require 'json'
+
 module PollEverywhere
   module Serializable
     def self.included(base)
@@ -9,10 +11,14 @@ module PollEverywhere
     # for the fields that belond to a serializable model. Since a Property lives 
     # at the class level, we have a Value class that 
     class Property
-      attr_accessor :name, :validations
+      attr_accessor :name, :validations, :description
 
-      def initialize(name)
+      def initialize(name, configuration={})
         self.name = name.to_sym
+        # Set attributes on the class from a given hash
+        configuration.each do |attr, args|
+          self.send("#{attr}=", *args) if self.respond_to? "#{attr}="
+        end
       end
 
       def value

@@ -1,4 +1,5 @@
 require 'uri'
+require 'base64'
 
 module PollEverywhere
   module HTTP
@@ -7,10 +8,15 @@ module PollEverywhere
     class RequestBuilder
       attr_accessor :method, :body, :headers, :params, :url, :format, :response, :adapter, :base_url
 
-      def initialize(adapter=PollEverywhere.http_adapter, base_url=PollEverywhere.url)
+      def initialize(adapter=PollEverywhere.config.http_adapter, base_url=PollEverywhere.config.url)
         self.adapter = adapter
         self.base_url = base_url
-        self.headers = {'Content-Type' => 'application/json', 'Accept' => 'application/json'}
+        self.headers = { 
+          'Content-Type' => 'application/json',
+          'Accept' => 'application/json',
+          'Authorization' => PollEverywhere.config.http_basic_credentials
+        }
+        
         yield self if block_given?
       end
 
@@ -61,10 +67,10 @@ module PollEverywhere
       # If a base_url is given, url_for can detect if a given .to is a path or URL, then
       # setup the approriate URL for the request.
       def url_for(uri)
-        if uri !~ /^http/ and base_url
+        if uri.to_s !~ /^http/ and base_url
           "#{base_url}#{uri}"
         else
-          uri
+          uri.to_s
         end
       end
     end
