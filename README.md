@@ -1,6 +1,6 @@
 # Poll Everywhere API Gem
 
-Integrate Poll Everywhere into your Ruby applications.
+The Poll Everywhere gem is the best way to integrate Poll Everywhere with your applications.
 
 # Getting Started
 

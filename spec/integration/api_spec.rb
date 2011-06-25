@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe "API" do
   context "polls" do
+    it "should get collection from my poll" do
+      PollEverywhere::Models::Poll.all.should have_at_least(1).items
+    end
+
     context "multiple choice" do
       before(:all) do
         @mcp = PollEverywhere::MultipleChoicePoll.from_hash(:title => 'Hey dude!', :options => %w[red blue green])

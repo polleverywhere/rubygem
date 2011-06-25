@@ -11,7 +11,11 @@ module PollEverywhere
     # for the fields that belond to a serializable model. Since a Property lives 
     # at the class level, we have a Value class that 
     class Property
-      attr_accessor :name, :validations, :description
+      include Configurable
+
+      attr_accessor :name, :validations
+
+      configurable :description
 
       def initialize(name, configuration={})
         self.name = name.to_sym
@@ -43,16 +47,16 @@ module PollEverywhere
         name ? @name = name.to_sym : @name
       end
 
-      def prop(name)
-        props[name]
+      # Define a property at the class level
+      def prop(name, &block)
+        prop = props[name]
+        prop.instance_eval(&block) if block
+        prop
       end
 
       # Setup attributes hash and delegate setters/getters to the base class.
       def props
         @props ||= Hash.new do |props,name|
-          # Setup the attribute class
-          props[name] = Property.new(name)
-
           # Define the methods at the instance level
           class_eval %{
             def #{name}=(val)
@@ -62,6 +66,9 @@ module PollEverywhere
             def #{name}
               props[:#{name}].current
             end}
+          
+          # Setup the attribute class
+          props[name] = Property.new(name)
 
         end.merge superclass_props
       end

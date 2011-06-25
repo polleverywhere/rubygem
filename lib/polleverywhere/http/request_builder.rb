@@ -2,7 +2,7 @@ require 'uri'
 require 'base64'
 
 module PollEverywhere
-  module HTTP
+  module HTTP # :nodoc
     # DSL for building requests within our application that build a Request object and send them to 
     # an adapter to fulfill the request.
     class RequestBuilder

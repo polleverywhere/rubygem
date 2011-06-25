@@ -1,21 +1,35 @@
 module PollEverywhere # :nodoc
   module Models # :nodoc
+
     # Poll is an abstract base classe for multiple choice and free text polls
     class Poll
       include Serializable
 
       prop :id
-      prop :title
-      prop :opened_at
-      prop :state
-      prop :owner_id
-      prop :options
-      prop :permalink
-      prop :updated_at
+      
+      prop :updated_at do
+        description %{The date and time the poll was last updated.}
+      end
 
-      # prop :state do
-      #   description %{Determines whether or not a poll can recieve responses. If the state is 'closed', the poll won't receive responses from the audience. If the poll is 'opened', the poll can receive responses from the audience. If the state is 'maxed_out', the poll won't receive responses until the account is upgraded to support more poll responses.}
-      # end
+      prop :title do
+        description %{Name of the poll. The title is visible when viewing charts, tables, and other views.}
+      end
+
+      prop :opened_at do
+        description %{Data and time that the poll was started.}
+      end
+
+      prop :options do
+        description %{The possible choices that people choose for a poll.}
+      end
+
+      prop :permalink do
+        description %{An obscufated ID that's used as a private link for sharing the poll}
+      end
+
+      prop :state do
+        description %{Determines whether or not a poll can recieve responses. If the state is 'closed', the poll won't receive responses from the audience. If the poll is 'opened', the poll can receive responses from the audience. If the state is 'maxed_out', the poll won't receive responses until the account is upgraded to support more poll responses.}
+      end
 
       attr_accessor :http
 
@@ -55,6 +69,19 @@ module PollEverywhere # :nodoc
         from_hash(:permalink => permalink).fetch
       end
 
+      def self.all
+        PollEverywhere.http.get.from("/my/polls").as(:json).response do |response|
+          ::JSON.parse(response.body).map do |hash|
+            case hash.keys.first.to_sym
+            when MCP.root_key
+              MCP.from_hash(hash)
+            when FTP.root_key
+              MCP.from_hash(hash)
+            end
+          end
+        end
+      end
+
       def destroy
         http.delete(path).response do |response|
           self.id = self.permalink = nil
@@ -71,9 +98,11 @@ module PollEverywhere # :nodoc
     end
 
     class FreeTextPoll < Poll
-      root_key :freetext_choice_poll
+      root_key :free_text_poll
 
-      prop :keyword
+      prop :keyword do
+        description "The keyword that's used to submit a response to the poll from participants that use SMS."
+      end
     end
 
     class MultipleChoicePoll < Poll
@@ -84,8 +113,14 @@ module PollEverywhere # :nodoc
         include Serializable
 
         prop :id
-        prop :value
-        prop :keyword
+
+        prop :value do
+          description "Text that is displayed in the chart that represents what a participant chooses when they response to a poll."
+        end
+
+        prop :keyword do
+          description "The keyword that's used to submit a response to the poll from participants that use SMS."
+        end
 
         attr_reader :poll
 
