@@ -37,7 +37,7 @@
       %h3 Creating a multiple choice poll
       -@mcp = PollEverywhere::MultipleChoicePoll.from_hash(:title => 'Hey dude!', :options => %w[red blue green]).save
       %code=examples @mcp  
-
+      
       %h3 Changing the title of the multiple choice poll
       -@mcp.title = "I like different titles"
       -@mcp.save

@@ -60,6 +60,16 @@ describe "API" do
         it "should update title" do
           @mcp.title.should eql("My pita bread is moldy")
         end
+
+        it "should start" do
+          @mcp.start
+          @mcp.state.should eql("opened")
+        end
+
+        it "should stop" do
+          @mcp.stop
+          @mcp.state.should eql("closed")
+        end
       end
 
       it "should destroy" do

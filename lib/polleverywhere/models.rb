@@ -1,7 +1,6 @@
 module PollEverywhere # :nodoc
   module Models # :nodoc
-
-    # Poll is an abstract base classe for multiple choice and free text polls
+    # Poll is an abstract base class for multiple choice and free text polls
     class Poll
       include Serializable
 
@@ -39,13 +38,13 @@ module PollEverywhere # :nodoc
 
       # Start the poll so that it may receive audience responses
       def start
-        state = "opened"
+        self.state = "opened"
         save
       end
 
       # Stop the poll so that it stops receieving responses
       def stop
-        state = "closed"
+        self.state = "closed"
         save
       end
 

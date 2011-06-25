@@ -1,4 +1,4 @@
-# Poll Everywhere API Gem
+# The Official Poll Everywhere API Gem
 
 The Poll Everywhere gem is the best way to integrate Poll Everywhere with your applications.
 
@@ -32,8 +32,6 @@ If you're using bundler, add the following line to your Gemfile:
     poll.open
 
 You can do all sorts of fun stuff with polls!
-
-# TODO
 
 A roadmap for our API:
 
