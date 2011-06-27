@@ -12,3 +12,8 @@ group :development, :test do
   gem 'rake'
   gem 'ruby-debug19'
 end
+
+group :api_docs do
+  gem 'middleman'
+  gem 'sourcify'
+end

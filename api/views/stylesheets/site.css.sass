@@ -1,0 +1,42 @@
+@import "compass"
+
+$base-font-size: 16px
+$code-font-size: 13px
+
+body
+  font:
+    family: Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman", serif
+    size: $base-font-size
+  width: 40em
+  margin: auto auto
+
+code
+  font-family: monaco, courier
+  font-size: $code-font-size
+  line-height: $base-font-size
+  padding: $base-font-size
+  display: block
+  padding: 1em
+  background: #eee
+  margin: 1em 0
+
+h1,h2,h3,h4,h5,h6
+  font-weight: normal
+
+h1
+  font-size: 30px
+h2
+  font-size: 24px
+h3,h4,h5.h6
+  font-size: 20px
+
+dl.attributes
+  dt
+    margin-top: 1em
+    font-family: courier
+    font-size: $code-font-size
+    line-height: $base-font-size
+  dl, dd
+    margin-left: 0
+  dd > dl
+    margin-left: 1em

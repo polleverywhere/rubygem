@@ -3,7 +3,7 @@ module PollEverywhere # :nodoc
     # Poll is an abstract base class for multiple choice and free text polls
     class Poll
       include Serializable
-
+      
       prop :id
       
       prop :updated_at do
@@ -16,10 +16,6 @@ module PollEverywhere # :nodoc
 
       prop :opened_at do
         description %{Data and time that the poll was started.}
-      end
-
-      prop :options do
-        description %{The possible choices that people choose for a poll.}
       end
 
       prop :permalink do
@@ -108,10 +104,16 @@ module PollEverywhere # :nodoc
 
       root_key :multiple_choice_poll
 
+      prop :options do
+        description %{The possible choices that people choose for a poll.}
+      end
+
       class Option
         include Serializable
 
-        prop :id
+        prop :id do
+          description "Unique identifier for the option. This is primarily used to keep track of what option attributes are changed."
+        end
 
         prop :value do
           description "Text that is displayed in the chart that represents what a participant chooses when they response to a poll."

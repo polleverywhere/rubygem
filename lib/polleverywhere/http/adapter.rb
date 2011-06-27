@@ -33,7 +33,7 @@ module PollEverywhere
           requests << request
           super request, &block
         end
-
+        
         def requests
           @requests ||= []
         end
