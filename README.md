@@ -22,14 +22,17 @@ If you're using bundler, add the following line to your Gemfile:
       password  "my_password"
     end
     
-    # Now start playing!
-    polls = PollEverywhere::Poll.all
-    poll = poll.first
-    poll.close
-    poll.title = "Hey there, I like changing titles around"
-    poll.options = %w[uno dos tres]
+    # Create a multiple choice poll
+    poll = PollEverywhere::MultipleChoicePoll.new
+    poll.title = 'Do you love numbers?'
+    poll.options = %w[1 2 3]
     poll.save
-    poll.open
+    # Create a free text poll    
+    poll = PollEverywhere::FreeTextPoll.new
+    poll.title = 'What is your favorite thing about vacation?'
+    poll.save
+    # Now start playing! Get a list of your polls
+    polls = PollEverywhere::Poll.all
 
 You can do all sorts of fun stuff with polls!
 

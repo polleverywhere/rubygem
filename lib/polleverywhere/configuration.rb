@@ -27,7 +27,7 @@ module PollEverywhere
     # this form of authorization will be replaced with a token authorization 
     # so that a password is not required.
     def http_basic_credentials
-      "Basic #{Base64.encode64("#{username}:#{password}")}"
+      "Basic #{Base64.encode64("#{username}:#{password}")}".chomp
     end
   end
 end

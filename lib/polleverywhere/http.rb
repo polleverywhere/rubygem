@@ -11,7 +11,7 @@ module PollEverywhere
     # Simple HTTP request/response objects for our adapter and DSL
     class Request < Struct.new(:method, :url, :headers, :body)
       def to_curl
-        %(curl -X #{method.to_s.upcase} #{headers.map{|h,v| %(-H "#{h}: #{v}")}.join(" ")} -d "#{body.gsub(/[!"`']/){|m| "\\#{m}" }}" "#{url}")
+        %(curl -X #{method.to_s.upcase} #{headers.map{|h,v| %(-H "#{h}: #{v}")}.join(" ")} -d "#{body.gsub(/[!"`'\n]/){|m| "\\#{m}" }}" "#{url}")
       end
     end
 

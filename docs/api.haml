@@ -21,7 +21,7 @@
 
       %h3 Attributes
       %dl.attributes
-        %dt=::PollEverywhere::MultipleChoicePoll.root_key
+        %dt=PollEverywhere::MultipleChoicePoll.root_key
         %dd Root key for multiple choice poll data.
         %dd
           %dl
@@ -39,7 +39,7 @@
         example do
           @mcp = PollEverywhere::MultipleChoicePoll.from_hash(:title => 'Hey dude!', :options => %w[red blue green]).save
         end
-        
+      
       %h3 Changing the title of a multiple choice poll
       :ruby
         example do
