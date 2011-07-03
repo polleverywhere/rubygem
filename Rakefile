@@ -1,10 +1,13 @@
 require 'bundler'
 Bundler::GemHelper.install_tasks
-require 'polleverywhere'
+
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new
 
 api_dir = File.expand_path("./../api", __FILE__)
 
-# Deal with showing terminal commands in stdout. Ideally this is streamed, but IO.popen is breaking because of Thor.
+# Deal with showing terminal commands in stdout. Ideally this is streamed, but 
+# IO.popen is breaking because of Thor.
 def cmd(cmd)
   puts cmd
   puts %x[#{cmd}]
@@ -26,5 +29,12 @@ namespace :api do
   task :release do
     Rake::Task["api:build"].execute
     Rake::Task["api:publish"].execute
+  end
+end
+
+namespace :ci do
+  desc "Run integration test against the API"
+  task :build do
+    Rake::Task["spec"].execute
   end
 end
