@@ -9,8 +9,8 @@
   %pre.ruby
     :preserve
       PollEverywhere.config do
-        username      "my_pollev_username"
-        password      "my_pollev_password"
+        username  "my_pollev_username"
+        password  "my_pollev_password"
       end
 
   %h1 Its all JSON
@@ -37,6 +37,7 @@
                   %dd=prop.description
   
   %h3 Creating a multiple choice poll
+  %p Specify a title and a few options to create a multiple choice poll.
   :example
     @mcp = PollEverywhere::MultipleChoicePoll.from_hash(:title => 'Hey dude!', :options => %w[red blue green]).save
   
@@ -45,12 +46,12 @@
     @mcp.title = "I like different titles"
     @mcp.save
 
-  %h3 Closing and opening multiple choice polls
-  %p To close a poll, change the state to "closed"
+  %h3 Starting and stopping multiple choice polls
+  %p To prevent audience members from responding to a poll, change the poll state to "closed".
   :example
     @mcp.stop
   
-  %p To open it back up (and allow responses to come on through) change the state to "opened"
+  %p To open it back up and allow responses to come on through change the state to "opened".
   :example
     @mcp.start
 
