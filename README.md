@@ -23,20 +23,30 @@ If you're using bundler, add the following line to your Gemfile:
     end
     
     # Create a multiple choice poll
-    poll = PollEverywhere::MultipleChoicePoll.new
-    poll.title = 'Do you love numbers?'
-    poll.options = %w[1 2 3]
-    poll.save
+    ftp = PollEverywhere::MultipleChoicePoll.new
+    ftp.title = 'Do you love numbers?'
+    ftp.options = %w[1 2 3]
+    ftp.save
+    
     # Create a free text poll    
-    poll = PollEverywhere::FreeTextPoll.new
-    poll.title = 'What is your favorite thing about vacation?'
-    poll.save
+    mcp = PollEverywhere::FreeTextPoll.new
+    mcp.title = 'What is your favorite thing about vacation?'
+    mcp.save
+    
     # Now start playing! Get a list of your polls
     polls = PollEverywhere::Poll.all
+    
+    # ,,, or grab a specific poll
+    mcp2 = PollEverywhere::MultipleChoicePoll.get(':permalink')
 
 You can do all sorts of fun stuff with polls!
 
-A roadmap for our API:
+# Additional documentation
+
+* **API Documentation** - http://api.polleverywhere.com
+* **RDocs** - http://rubydoc.info/gems/polleverywhere
+
+# API and RubyGem Roadmap
 
 * API models and documentation for more pieces of our application
 * Process errors triggered by the Server

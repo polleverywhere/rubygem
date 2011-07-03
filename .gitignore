@@ -4,4 +4,4 @@
 .sass-cache
 Gemfile.lock
 pkg/*
-api/build
+api/build/*
