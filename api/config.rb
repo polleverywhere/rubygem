@@ -2,7 +2,6 @@ require 'rubygems'
 require 'bundler/setup'
 require 'polleverywhere'
 require 'polleverywhere/haml'
-require 'sourcify'
 
 # Poll Everywhere credential configuration
 PollEverywhere.config do

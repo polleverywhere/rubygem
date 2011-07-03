@@ -15,5 +15,4 @@ end
 
 group :api_docs do
   gem 'middleman'
-  gem 'sourcify'
 end
