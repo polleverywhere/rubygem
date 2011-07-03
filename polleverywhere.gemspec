@@ -4,7 +4,7 @@ require "polleverywhere/version"
 
 Gem::Specification.new do |s|
   s.name        = "polleverywhere"
-  s.version     = Polleverywhere::VERSION
+  s.version     = PollEverywhere::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Brad Gessler, Steel Fu"]
   s.email       = ["opensource@polleverywhere.com"]
