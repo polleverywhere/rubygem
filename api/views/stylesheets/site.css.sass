@@ -10,7 +10,7 @@ body
   width: 40em
   margin: auto auto
 
-code
+pre
   font-family: monaco, courier
   font-size: $code-font-size
   line-height: $base-font-size
@@ -19,7 +19,10 @@ code
   padding: 1em
   background: #eee
   margin: 1em 0
-
+  overflow: hidden
+  &:hover
+    overflow: visible
+  
 h1,h2,h3,h4,h5,h6
   font-weight: normal
 

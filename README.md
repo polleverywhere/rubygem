@@ -39,6 +39,8 @@ You can do all sorts of fun stuff with polls!
 A roadmap for our API:
 
 * API models and documentation for more pieces of our application
+* Process errors triggered by the Server
+* Perform client-side validations
 * Asyn/Evented HTTP adapter
 * App layer specs
 * Protocol/API layer specs

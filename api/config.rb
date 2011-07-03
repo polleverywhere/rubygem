@@ -1,3 +1,16 @@
+require 'rubygems'
+require 'bundler/setup'
+require 'polleverywhere'
+require 'sourcify'
+
+# Poll Everywhere credential configuration
+PollEverywhere.config do
+  username      "test"
+  password      "test"
+  url           "http://api.polleverywhere.com"
+  http_adapter  :doc
+end
+
 # CodeRay syntax highlighting in Haml
 # activate :code_ray
 
@@ -14,19 +27,20 @@
 # With alternative layout
 # page "/path/to/file.html", :layout => :otherlayout
 
+module Haml::Filters::Example
+  include Haml::Filters::Base
+  
+  def render(text)
+    formats = {}
+    formats[:ruby] = text
+    eval(text, self.send(:binding)) # Run the ruby code so we can get at the curl formats, etc
+    formats[:curl] = PollEverywhere.config.http_adapter.last_requests.map(&:to_curl).join("\n\n")
+    formats.map{ |format, example| %(<pre class="#{format}">#{example}</pre>) }.join
+  end
+end
+
 # Helpers
 helpers do
-  def examples(model)
-    model.http.adapter.request.to_curl
-  end
-
-  def example(&block)
-    formats = {}
-    block.call
-    # formats[:ruby] = block.to_source(:strip_enclosure => true)
-    formats[:curl] = PollEverywhere.config.http_adapter.last_requests.map(&:to_curl).join("\n\n")
-    puts formats.map{ |format, example| %(<pre class="#{format}">#{example}</pre>) }.join
-  end
 end
 
 # Change the CSS directory
@@ -47,7 +61,7 @@ configure :build do
   # activate :minify_javascript
   
   # Enable cache buster
-  # activate :cache_buster
+  activate :cache_buster
   
   # Use relative URLs
   # activate :relative_assets

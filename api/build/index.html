@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
+    <!-- Comment in layout -->
+    <link href="/stylesheets/site.css?1309650590" media="screen" rel="stylesheet" type="text/css" />
+    <script type='text/javascript'>
+      //<![CDATA[
+        // Comment in javascript
+      //]]>
+    </script>
+    
+  </head>
+  <body class='index'>
+    <div id='main' role='main'>
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      <html>
+        <head>
+          <title>The Poll Everywhere API</title>
+        </head>
+        <body>
+          <header>
+            <h1>The Poll Everywhere API</h1>
+          </header>
+          <section>
+            <p>This documentation assumes that you are familar with the low-level semantics of HTTP, including the use of tools like cURL, and JSON.</p>
+            <h1>Authentication</h1>
+            <p>A Poll Everywhere username and password is used to login to the API and manipulate polls on an account. These credentials can be created at <a href="http://www.polleverywhere.com/reserve">Poll Everywhere</a>.</p>
+            <p>The credentials can be configured on the Poll Everywhere gem or manually via HTTP Basic authentication (More information on HTTP Basic credentials an encoding can be found at <a href="http://en.wikipedia.org/HTTP Basic">Wikipedia</a>).</p>
+            <pre class='ruby'>PollEverywhere.config do&#x000A;  username      "my_pollev_username"&#x000A;  password      "my_pollev_password"&#x000A;end&#x000A;</pre>
+            <h1>Its all JSON</h1>
+            <p>JSON key-value data structures are used throughout the API application to persist and modify data to the web application. Typically resources will include a root key that corresponds with the name of the name of the resource; from example, multiple choice polls all have the root key 'multiple_choice_poll'.</p>
+            <h1>Polls</h1>
+            <h2>Multiple choice polls</h2>
+            <p>These polls are great for collecting structured information from audiences if you want to define a set of answers that participants may choose from.</p>
+            <h3>Attributes</h3>
+            <dl class='attributes'>
+              <dt>multiple_choice_poll</dt>
+              <dd>Root key for multiple choice poll data.</dd>
+              <dd>
+                <dl>
+                  <dt>id</dt>
+                  <dd></dd>
+                  <dt>updated_at</dt>
+                  <dd>The date and time the poll was last updated.</dd>
+                  <dt>title</dt>
+                  <dd>Name of the poll. The title is visible when viewing charts, tables, and other views.</dd>
+                  <dt>opened_at</dt>
+                  <dd>Data and time that the poll was started.</dd>
+                  <dt>permalink</dt>
+                  <dd>An obscufated ID that's used as a private link for sharing the poll</dd>
+                  <dt>state</dt>
+                  <dd>Determines whether or not a poll can recieve responses. If the state is 'closed', the poll won't receive responses from the audience. If the poll is 'opened', the poll can receive responses from the audience. If the state is 'maxed_out', the poll won't receive responses until the account is upgraded to support more poll responses.</dd>
+                  <dt>options</dt>
+                  <dd>The possible choices that people choose for a poll.</dd>
+                  <dd>
+                    <dl>
+                      <dt>id</dt>
+                      <dd>Unique identifier for the option. This is primarily used to keep track of what option attributes are changed.</dd>
+                      <dt>value</dt>
+                      <dd>Text that is displayed in the chart that represents what a participant chooses when they response to a poll.</dd>
+                      <dt>keyword</dt>
+                      <dd>The keyword that's used to submit a response to the poll from participants that use SMS.</dd>
+                    </dl>
+                  </dd>
+                </dl>
+              </dd>
+            </dl>
+            <h3>Creating a multiple choice poll</h3>
+            <pre class="ruby">@mcp = PollEverywhere::MultipleChoicePoll.from_hash(:title => 'Hey dude!', :options => %w[red blue green]).save&#x000A;</pre><pre class="curl">curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Basic dGVzdDp0ZXN0" -d "{\&#x000A;  \"multiple_choice_poll\": {\&#x000A;    \"id\": null,\&#x000A;    \"updated_at\": null,\&#x000A;    \"title\": \"Hey dude\!\",\&#x000A;    \"opened_at\": null,\&#x000A;    \"permalink\": null,\&#x000A;    \"state\": null,\&#x000A;    \"options\": [\&#x000A;      {\&#x000A;        \"id\": null,\&#x000A;        \"value\": \"red\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": null,\&#x000A;        \"value\": \"blue\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": null,\&#x000A;        \"value\": \"green\",\&#x000A;        \"keyword\": null\&#x000A;      }\&#x000A;    ]\&#x000A;  }\&#x000A;}" "http://api.polleverywhere.com/multiple_choice_polls"</pre>
+            <h3>Changing the title of a multiple choice poll</h3>
+            <pre class="ruby">@mcp.title = "I like different titles"&#x000A;@mcp.save&#x000A;</pre><pre class="curl">curl -X PUT -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Basic dGVzdDp0ZXN0" -d "{\&#x000A;  \"multiple_choice_poll\": {\&#x000A;    \"id\": 771170,\&#x000A;    \"updated_at\": null,\&#x000A;    \"title\": \"I like different titles\",\&#x000A;    \"opened_at\": null,\&#x000A;    \"permalink\": \"LTE5NjU3MTk1NTY\",\&#x000A;    \"state\": \"opened\",\&#x000A;    \"options\": [\&#x000A;      {\&#x000A;        \"id\": 4026880,\&#x000A;        \"value\": \"red\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": 4026881,\&#x000A;        \"value\": \"blue\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": 4026882,\&#x000A;        \"value\": \"green\",\&#x000A;        \"keyword\": null\&#x000A;      }\&#x000A;    ]\&#x000A;  }\&#x000A;}" "http://api.polleverywhere.com/multiple_choice_polls/LTE5NjU3MTk1NTY"</pre>
+            <h3>Closing and opening multiple choice polls</h3>
+            <p>To close a poll, change the state to "closed"</p>
+            <pre class="ruby">@mcp.stop&#x000A;</pre><pre class="curl">curl -X PUT -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Basic dGVzdDp0ZXN0" -d "{\&#x000A;  \"multiple_choice_poll\": {\&#x000A;    \"id\": 771170,\&#x000A;    \"updated_at\": \"2011-07-02T22:20:34-04:00\",\&#x000A;    \"title\": \"I like different titles\",\&#x000A;    \"opened_at\": \"2011-07-02T22:20:34-04:00\",\&#x000A;    \"permalink\": \"LTE5NjU3MTk1NTY\",\&#x000A;    \"state\": \"closed\",\&#x000A;    \"options\": [\&#x000A;      {\&#x000A;        \"id\": 4026880,\&#x000A;        \"value\": \"red\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": 4026881,\&#x000A;        \"value\": \"blue\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": 4026882,\&#x000A;        \"value\": \"green\",\&#x000A;        \"keyword\": null\&#x000A;      }\&#x000A;    ]\&#x000A;  }\&#x000A;}" "http://api.polleverywhere.com/multiple_choice_polls/LTE5NjU3MTk1NTY"</pre>
+            <p>To open it back up (and allow responses to come on through) change the state to "opened"</p>
+            <pre class="ruby">@mcp.start&#x000A;</pre><pre class="curl">curl -X PUT -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Basic dGVzdDp0ZXN0" -d "{\&#x000A;  \"multiple_choice_poll\": {\&#x000A;    \"id\": 771170,\&#x000A;    \"updated_at\": \"2011-07-02T22:20:34-04:00\",\&#x000A;    \"title\": \"I like different titles\",\&#x000A;    \"opened_at\": null,\&#x000A;    \"permalink\": \"LTE5NjU3MTk1NTY\",\&#x000A;    \"state\": \"opened\",\&#x000A;    \"options\": [\&#x000A;      {\&#x000A;        \"id\": 4026880,\&#x000A;        \"value\": \"red\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": 4026881,\&#x000A;        \"value\": \"blue\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": 4026882,\&#x000A;        \"value\": \"green\",\&#x000A;        \"keyword\": null\&#x000A;      }\&#x000A;    ]\&#x000A;  }\&#x000A;}" "http://api.polleverywhere.com/multiple_choice_polls/LTE5NjU3MTk1NTY"</pre>
+            <h3>Delete a multiple choice poll</h3>
+            <p>When you're totally finished with the poll and you want to tidy things up a bit, you can delete polls</p>
+            <pre class="ruby">@mcp.destroy&#x000A;</pre><pre class="curl">curl -X DELETE -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Basic dGVzdDp0ZXN0" -d "{\&#x000A;  \"multiple_choice_poll\": {\&#x000A;    \"id\": 771170,\&#x000A;    \"updated_at\": \"2011-07-02T22:20:34-04:00\",\&#x000A;    \"title\": \"I like different titles\",\&#x000A;    \"opened_at\": null,\&#x000A;    \"permalink\": \"LTE5NjU3MTk1NTY\",\&#x000A;    \"state\": \"opened\",\&#x000A;    \"options\": [\&#x000A;      {\&#x000A;        \"id\": 4026880,\&#x000A;        \"value\": \"red\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": 4026881,\&#x000A;        \"value\": \"blue\",\&#x000A;        \"keyword\": null\&#x000A;      },\&#x000A;      {\&#x000A;        \"id\": 4026882,\&#x000A;        \"value\": \"green\",\&#x000A;        \"keyword\": null\&#x000A;      }\&#x000A;    ]\&#x000A;  }\&#x000A;}" "http://api.polleverywhere.com/multiple_choice_polls/LTE5NjU3MTk1NTY"</pre>
+            <h2>Free text polls</h2>
+            <p>These polls are used to collect short answers or unstructured responses from participants.</p>
+            <h3>Attributes</h3>
+            <dl class='attributes'>
+              <dt>free_text_poll</dt>
+              <dd>Root key for free text poll data.</dd>
+              <dd>
+                <dl>
+                  <dt>id</dt>
+                  <dd></dd>
+                  <dt>updated_at</dt>
+                  <dd>The date and time the poll was last updated.</dd>
+                  <dt>title</dt>
+                  <dd>Name of the poll. The title is visible when viewing charts, tables, and other views.</dd>
+                  <dt>opened_at</dt>
+                  <dd>Data and time that the poll was started.</dd>
+                  <dt>permalink</dt>
+                  <dd>An obscufated ID that's used as a private link for sharing the poll</dd>
+                  <dt>state</dt>
+                  <dd>Determines whether or not a poll can recieve responses. If the state is 'closed', the poll won't receive responses from the audience. If the poll is 'opened', the poll can receive responses from the audience. If the state is 'maxed_out', the poll won't receive responses until the account is upgraded to support more poll responses.</dd>
+                  <dt>keyword</dt>
+                  <dd>The keyword that's used to submit a response to the poll from participants that use SMS.</dd>
+                </dl>
+              </dd>
+            </dl>
+            <h3>Create free text polls</h3>
+            <p>Creating a free text poll is similar to building a multiple choice poll, just without the options attribute.</p>
+            <pre class="ruby">@ftp = PollEverywhere::FreeTextPoll.from_hash(:title => "What is the meaning of life?").save&#x000A;</pre><pre class="curl">curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Basic dGVzdDp0ZXN0" -d "{\&#x000A;  \"free_text_poll\": {\&#x000A;    \"id\": null,\&#x000A;    \"updated_at\": null,\&#x000A;    \"title\": \"What is the meaning of life?\",\&#x000A;    \"opened_at\": null,\&#x000A;    \"permalink\": null,\&#x000A;    \"state\": null,\&#x000A;    \"keyword\": null\&#x000A;  }\&#x000A;}" "http://api.polleverywhere.com/multiple_choice_polls"</pre>
+            <h3>Modify a free text poll</h3>
+            <p>Change the title attribute to change the poll</p>
+            <pre class="ruby">@ftp.title = "No really, what is the meaning of life?"&#x000A;@ftp.save&#x000A;</pre><pre class="curl">curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Basic dGVzdDp0ZXN0" -d "{\&#x000A;  \"free_text_poll\": {\&#x000A;    \"id\": null,\&#x000A;    \"updated_at\": null,\&#x000A;    \"title\": \"No really, what is the meaning of life?\",\&#x000A;    \"opened_at\": null,\&#x000A;    \"permalink\": null,\&#x000A;    \"state\": null,\&#x000A;    \"keyword\": null\&#x000A;  }\&#x000A;}" "http://api.polleverywhere.com/multiple_choice_polls"</pre>
+            <h3>Delete a free text poll</h3>
+            <pre class="ruby">@ftp.destroy&#x000A;</pre><pre class="curl">curl -X DELETE -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Basic dGVzdDp0ZXN0" -d "{\&#x000A;  \"free_text_poll\": {\&#x000A;    \"id\": null,\&#x000A;    \"updated_at\": null,\&#x000A;    \"title\": \"No really, what is the meaning of life?\",\&#x000A;    \"opened_at\": null,\&#x000A;    \"permalink\": null,\&#x000A;    \"state\": null,\&#x000A;    \"keyword\": null\&#x000A;  }\&#x000A;}" "http://api.polleverywhere.com/multiple_choice_polls"</pre>
+          </section>
+          <footer>
+            <p>
+              This documentation was automatically generated by the Poll Everywhere rubygem at
+              <a href='http://github.com/polleverywhere/polleverywhere'>http://github.com/polleverywhere/polleverywhere</a>.
+              Community support for the API is available on the
+              <a href='http://groups.google.com/group/polleverywhere-dev'>Poll Everywhere Developer mailing list</a>
+              and paid professional support at
+              <a href='http://www.polleverywhere.com/professional-support'>Poll Everywhere</a>.
+            </p>
+          </footer>
+        </body>
+      </html>
+    </div>
+  </body>
+</html>

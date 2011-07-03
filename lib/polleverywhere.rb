@@ -1,7 +1,6 @@
 module PollEverywhere
   autoload :Configuration,  'polleverywhere/configuration'
   autoload :HTTP,           'polleverywhere/http'
-  autoload :API,            'polleverywhere/api'
   autoload :CoreExt,        'polleverywhere/core_ext'
   autoload :Serializable,   'polleverywhere/serializable'
   autoload :Configurable,   'polleverywhere/configurable'
