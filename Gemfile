@@ -9,6 +9,7 @@ group :development, :test do
   gem 'growl'
   gem 'rspec'
   gem 'ruby-debug19'
+  gem 'rake'
 end
 
 group :api_docs do
