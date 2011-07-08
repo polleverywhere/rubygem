@@ -1,5 +1,58 @@
 module PollEverywhere # :nodoc
   module Models # :nodoc
+    class Participant
+      include Serializable
+
+      root_key :user
+
+      prop :first_name
+
+      prop :last_name
+
+      prop :email
+
+      prop :phone_number do
+        description %{Phone number associated with the participant.}
+      end
+
+      prop :responding_as do
+        description %{This is used to identify the participant in reports.}
+      end
+
+      prop :password
+
+      attr_accessor :http
+
+      def initialize(http=PollEverywhere.http)
+        self.http = http
+      end
+
+      def save
+        http.put(to_json).as(:json).to(path).response do |response|
+          from_json response.body
+        end
+      end
+
+      def self.get(email)
+        from_hash(:email => email).fetch
+      end
+
+      def destroy
+        http.delete(path).response do |response|
+        end
+      end
+
+      def path
+        "/participants/#{email}"
+      end
+
+      def fetch
+        http.get.from(path).as(:json).response do |response|
+          from_json response.body
+        end
+      end
+    end
+
     # Poll is an abstract base class for multiple choice and free text polls
     class Poll
       include Serializable

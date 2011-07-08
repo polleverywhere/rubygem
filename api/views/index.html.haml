@@ -86,3 +86,30 @@
   %h3 Delete a free text poll
   :example
     @ftp.destroy
+  
+  %h1 Participants
+  %p Participants are used to identify who is responding to your polls.    
+
+  %h2 Attributes
+  %dl.attributes
+    %dt=PollEverywhere::Participant.root_key
+    %dd Root key for participant data.
+    %dd
+      %dl
+        -PollEverywhere::Participant.props.each do |_, prop|
+          %dt=prop.name
+          %dd=prop.description
+  
+  %h2 Creating a new Participant
+  %p Specify the details of a new participant
+  :example
+    @participant = PollEverywhere::Participant.from_hash(:email => 'b.obama@whitehouse.gov', :first_name => 'Barack', :last_name => 'Obama', :password => 'mickeymouse', :responding_as => 'Barack').save
+  
+  %h2 Updating participant details
+  :example
+    @participant.first_name = "President"
+    @participant.save
+
+  %h2 Delete a Participant
+  :example
+    @participant.destroy

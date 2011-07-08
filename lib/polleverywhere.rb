@@ -8,8 +8,10 @@ module PollEverywhere
 
   # Lets make life easier for developers and provide shortcuts to module and class names. 
   # PollEverywhere::Model::MultipleChoicePoll now becomes PollEverywhere::MCP. Cool eh? Thank me later.
+  Participant = Models::Participant
   MCP = MultipleChoicePoll = Models::MultipleChoicePoll
   FTP = FreeTextPoll = Models::FreeTextPoll
+  
 
   def self.config(&block)
     @config ||= Configuration.new
