@@ -38,6 +38,22 @@ module PollEverywhere
         def initialize(property)
           @property = property
         end
+
+        # Detect if the values have changed since we last updated them
+        def has_changed?
+          original != current
+        end
+
+        # Commit the values if they're valid
+        def commit
+          @original = @current if valid?
+        end
+
+        # Validations of the property value
+        # TODO this is stubbed out...
+        def valid?
+          true
+        end
       end
     end
 
