@@ -11,6 +11,15 @@ module PollEverywhere
     # for the fields that belond to a serializable model. Since a Property lives 
     # at the class level, we have a Value class that 
     class Property
+
+      # Manage a set of properties and easily create instances of values from them.
+      class Set
+        # Create a set of values given a hash k/v hash
+        def values(hash={})
+          Value::Set.new
+        end
+      end
+
       include Configurable
 
       attr_accessor :name, :validations
@@ -32,6 +41,24 @@ module PollEverywhere
       # Contains the value of the property, runs validations, and
       # tracks property changes
       class Value
+
+        # Manage a collection of values so that you can validate, commit, detect changes, etc in bulk
+        class Set
+          # If an attribute is given, check if its changed specifically; otherise check all the values
+          def changed?(attr=nil)
+          end
+
+          # If an attr is given, this returns an 2 item array with ['original', 'changed']; otherwise returns a hash
+          # with a {:attr => ['original', 'changed']}. The 2 item array for a single attr
+          # allows for grabbing changes like
+          #
+          #     original, current = changes 'attr'
+          #
+          # Returns nil or excludes the key if the value didn't change.
+          def changes(attr=nil)
+          end
+        end
+
         attr_reader :property, :original
         attr_accessor :current
 
