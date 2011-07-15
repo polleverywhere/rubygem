@@ -11,12 +11,19 @@ module PollEverywhere
     # for the fields that belond to a serializable model. Since a Property lives 
     # at the class level, we have a Value class that 
     class Property
-
       # Manage a set of properties and easily create instances of values from them.
-      class Set
-        # Create a set of values given a hash k/v hash
-        def values(hash={})
-          Value::Set.new
+      class Set < CoreExt::HashWithIndifferentAccess
+        # Create a set of of properties that we can use to create instances of value sets
+        def initialize
+          super() do |props, name|
+            props[name] = Property.new(name)
+          end
+        end
+
+        # Return a collection fo values wrapped inside of a valuset. Valuesets make
+        # it easier to query and validate a collection of values.
+        def value_set(hash={})
+          Value::Set.new(*values.map(&:value))
         end
       end
 
@@ -41,26 +48,48 @@ module PollEverywhere
       # Contains the value of the property, runs validations, and
       # tracks property changes
       class Value
-
         # Manage a collection of values so that you can validate, commit, detect changes, etc in bulk
-        class Set
-          # If an attribute is given, check if its changed specifically; otherise check all the values
-          def changed?(attr=nil)
+        class Set < CoreExt::HashWithIndifferentAccess
+          def initialize(*vals, &block)
+            # Copy the values and property names into the hash
+            values.each do |value|
+              prop[value.property.name] = value
+            end
           end
 
-          # If an attr is given, this returns an 2 item array with ['original', 'changed']; otherwise returns a hash
-          # with a {:attr => ['original', 'changed']}. The 2 item array for a single attr
+          # Set the current value so that we can track dirty changes
+          def []=(prop_name, value)
+            prop(prop_name).current = value
+          end
+
+          # Access the current value
+          def [](prop_name)
+            prop(prop_name).current
+          end
+
+          # Returns a hash with a {:attr => ['original', 'changed']}. The 2 item array for a single attr
           # allows for grabbing changes like
           #
           #     original, current = changes 'attr'
           #
           # Returns nil or excludes the key if the value didn't change.
-          def changes(attr=nil)
+          def changes(*props)
+          end
+
+          # Our collection of property values... I call them props under the assumption that they're returning values.
+          def prop(prop_name=nil)
+            @props ||= CoreExt::HashWithIndifferentAccess.new do |hash, key|
+              hash[key] = Property.new(key).value
+            end
+            prop_name ? @props[prop_name] : @props
           end
         end
 
         attr_reader :property, :original
         attr_accessor :current
+        # Make our value DSL prettier so we can ask, value.was and value.is
+        alias :is :current
+        alias :was :original
 
         def initialize(property)
           @property = property
@@ -69,6 +98,11 @@ module PollEverywhere
         # Detect if the values have changed since we last updated them
         def has_changed?
           original != current
+        end
+
+        # The original and current state of the value if it changed.
+        def changes
+          [original, current] if has_changed?
         end
 
         # Commit the values if they're valid

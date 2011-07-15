@@ -43,17 +43,48 @@ describe PollEverywhere::Serializable::Property do
 end
 
 describe PollEverywhere::Serializable::Property::Set do
-  it "should initialize a Value::Set from a list properties" do
-    # Property::Set.new.values ...
-    pending
+  before(:all) do
+    @propset = PollEverywhere::Serializable::Property::Set.new
+  end
+
+  it "should return properties for attributes" do
+    @propset[:first_name].should be_instance_of(PollEverywhere::Serializable::Property)
+  end
+
+  it "should return a Value::Set" do
+    @propset.value_set.should be_instance_of(PollEverywhere::Serializable::Property::Value::Set)
   end
 end
 
 describe PollEverywhere::Serializable::Property::Value::Set do
   context "changes" do
-    it "should return true/false if a specific attribute is dirty"
-    it "should retrieve the original value"
-    it "should retrieve the current value"
-    it "should not allow direct chagnes to the original value"
+    before(:each) do
+      @prop = PollEverywhere::Serializable::Property.new(:email)
+      @value_set = PollEverywhere::Serializable::Property::Value::Set.new(@prop.value)
+    end
+
+    context "property value" do
+      before(:each) do
+        @value_set[:email] = 'brad@bradgessler.com'
+      end
+
+      it "should have the current value" do
+        @value_set[:email].should eql('brad@bradgessler.com')
+      end
+
+      it "should have the original value" do
+        @value_set.prop(:email).was.should be_nil
+      end
+
+      it "should have changes for property value" do
+        was, is = @value_set.prop(:email).changes
+        was.should be_nil
+        is.should eql('brad@bradgessler.com')
+      end
+
+      it "should have changed" do
+        @value_set.prop(:email).should have_changed
+      end
+    end
   end
 end
