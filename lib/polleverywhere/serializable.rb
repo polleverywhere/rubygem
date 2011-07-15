@@ -50,10 +50,10 @@ module PollEverywhere
       class Value
         # Manage a collection of values so that you can validate, commit, detect changes, etc in bulk
         class Set < CoreExt::HashWithIndifferentAccess
-          def initialize(*vals, &block)
+          def initialize(*values, &block)
             # Copy the values and property names into the hash
             values.each do |value|
-              prop[value.property.name] = value
+              props[value.property.name] = value
             end
           end
 
@@ -67,21 +67,24 @@ module PollEverywhere
             prop(prop_name).current
           end
 
-          # Returns a hash with a {:attr => ['original', 'changed']}. The 2 item array for a single attr
-          # allows for grabbing changes like
-          #
-          #     original, current = changes 'attr'
-          #
-          # Returns nil or excludes the key if the value didn't change.
-          def changes(*props)
+          # Returns a hash with a {:attr => ['original', 'changed']}.
+          def changes
+            props.inject(CoreExt::HashWithIndifferentAccess.new) do |hash, (prop_name, value)|
+              hash[prop_name] = value.changes if value.changed?
+              hash
+            end
           end
 
           # Our collection of property values... I call them props under the assumption that they're returning values.
-          def prop(prop_name=nil)
+          def props
             @props ||= CoreExt::HashWithIndifferentAccess.new do |hash, key|
               hash[key] = Property.new(key).value
             end
-            prop_name ? @props[prop_name] : @props
+          end
+
+          # Prettier way to get at a prop so it doesn't feel so hashy
+          def prop(prop_name)
+            props[prop_name]
           end
         end
 
@@ -96,13 +99,13 @@ module PollEverywhere
         end
 
         # Detect if the values have changed since we last updated them
-        def has_changed?
+        def changed?
           original != current
         end
 
         # The original and current state of the value if it changed.
         def changes
-          [original, current] if has_changed?
+          [original, current] if changed?
         end
 
         # Commit the values if they're valid

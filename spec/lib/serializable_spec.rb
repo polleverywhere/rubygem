@@ -13,7 +13,7 @@ describe PollEverywhere::Serializable::Property do
     
     it "should detect changes" do
       @value.current = "super fun times"
-      @value.should have_changed
+      @value.should be_changed
     end
 
     it "should maintain original value" do
@@ -28,7 +28,7 @@ describe PollEverywhere::Serializable::Property do
       end
 
       it "should not be changed" do
-        @value.should_not have_changed
+        @value.should_not be_changed
       end
 
       it "should have original value" do
@@ -83,7 +83,14 @@ describe PollEverywhere::Serializable::Property::Value::Set do
       end
 
       it "should have changed" do
-        @value_set.prop(:email).should have_changed
+        @value_set.prop(:email).should be_changed
+      end
+    end
+
+    context "hash" do
+      it "should return hash of changed value" do
+        @value_set[:email] = 'brad@bradgessler.com'
+        @value_set.changes[:email].should eql([nil, 'brad@bradgessler.com'])
       end
     end
   end
