@@ -77,7 +77,7 @@ module PollEverywhere # :nodoc
       end
 
       prop :opened_at do
-        description %{Data and time that the poll was started.}
+        description %{Date and time that the poll was started.}
       end
 
       prop :permalink do
@@ -86,6 +86,22 @@ module PollEverywhere # :nodoc
 
       prop :state do
         description %{Determines whether or not a poll can recieve responses. If the state is 'closed', the poll won't receive responses from the audience. If the poll is 'opened', the poll can receive responses from the audience. If the state is 'maxed_out', the poll won't receive responses until the account is upgraded to support more poll responses.}
+      end
+
+      prop :sms_enabled do
+        description %{Allow participants to respond to the poll using SMS text messages.}
+      end
+
+      prop :twitter_enabled do
+        description %{Allow participants to respond to the poll with Twitter.}
+      end
+
+      prop :web_enabled do
+        description %{Allow participants to respond to the poll with their web browsers through the poll owners PollEv.com page.}
+      end
+
+      prop :sharing_enabled do
+        description %{Allow participants to respond to the poll through the obscufated permalink.}
       end
 
       attr_accessor :http

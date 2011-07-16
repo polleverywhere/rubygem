@@ -1,7 +1,11 @@
 %section#main
-  %p This documentation assumes that you are familar with the low-level semantics of HTTP, including the use of tools like cURL, and JSON.
-  
-  %h1 Authentication
+  %h1 Getting started
+  %p We're really stoked that you want to integrate Poll Everywhere into your application. We built this API with goal of providing developers with a simple, reliable, and enjoyable way to integrate Poll Everywhere into applications.
+
+  %h2 We ♥ JSON
+  %p JSON key-value data structures are used throughout the API application to persist and modify data to the web application. Typically resources will include a root key that corresponds with the name of the name of the resource; from example, multiple choice polls all have the root key 'multiple_choice_poll'.
+
+  %h2 Authentication
   %p A Poll Everywhere username and password is used to login to the API and manipulate polls on an account. These credentials can be created at <a href="http://www.polleverywhere.com/reserve">Poll Everywhere</a>.
   
   %p The credentials can be configured on the Poll Everywhere gem or manually via HTTP Basic authentication (More information on HTTP Basic credentials an encoding can be found at <a href="http://en.wikipedia.org/wiki/Basic_access_authentication">Wikipedia</a>).
@@ -12,9 +16,11 @@
         username  "my_pollev_username"
         password  "my_pollev_password"
       end
-  
-  %h1 Its all JSON
-  %p JSON key-value data structures are used throughout the API application to persist and modify data to the web application. Typically resources will include a root key that corresponds with the name of the name of the resource; from example, multiple choice polls all have the root key 'multiple_choice_poll'.
+
+  %h2 Support
+  %p We regularly run a <a href="https://github.com/polleverywhere/polleverywhere/tree/master/spec/integration">suite of integration tests</a> against our API to make sure that our API is running smoothly.
+
+  %p Now lets roll up our sleeves and get our hands dirty!
 
   %h1 Polls
   %h2 Multiple choice polls
@@ -22,18 +28,21 @@
 
   %h3 Attributes
   %dl.attributes
-    %dt=PollEverywhere::MultipleChoicePoll.root_key
+    %dt
+      %code=PollEverywhere::MultipleChoicePoll.root_key
     %dd Root key for multiple choice poll data.
     %dd
       %dl
         -PollEverywhere::MultipleChoicePoll.prop_set.each do |_, prop|
-          %dt=prop.name
+          %dt
+            %code=prop.name
           %dd=prop.description
           -if prop.name == :options
             %dd
               %dl
                 -PollEverywhere::MultipleChoicePoll::Option.prop_set.each do |_, prop|
-                  %dt=prop.name
+                  %dt
+                    %code=prop.name
                   %dd=prop.description
   
   %h3 Creating a multiple choice poll
@@ -64,12 +73,14 @@
   %p These polls are used to collect short answers or unstructured responses from participants.
   %h3 Attributes
   %dl.attributes
-    %dt=PollEverywhere::FTP.root_key
+    %dt
+      %code=PollEverywhere::FTP.root_key
     %dd Root key for free text poll data.
     %dd
       %dl
         -PollEverywhere::FTP.prop_set.each do |_, prop|
-          %dt=prop.name
+          %dt
+            %code=prop.name
           %dd=prop.description
 
   %h3 Create free text polls
@@ -92,12 +103,14 @@
 
   %h2 Attributes
   %dl.attributes
-    %dt=PollEverywhere::Participant.root_key
+    %dt
+      %code=PollEverywhere::Participant.root_key
     %dd Root key for participant data.
     %dd
       %dl
         -PollEverywhere::Participant.prop_set.each do |_, prop|
-          %dt=prop.name
+          %dt
+            %code=prop.name
           %dd=prop.description
   
   %h2 Creating a new Participant
