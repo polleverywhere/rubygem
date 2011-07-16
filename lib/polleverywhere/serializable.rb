@@ -75,6 +75,16 @@ module PollEverywhere
             end
           end
 
+          # Detects if all properties have been changed
+          def changed?
+            props.values.any?(&:changed?)
+          end
+
+          # Commit changes
+          def commit
+            props.values.each(&:commit)
+          end
+
           # Our collection of property values... I call them props under the assumption that they're returning values.
           def props
             @props ||= CoreExt::HashWithIndifferentAccess.new do |hash, key|
@@ -110,13 +120,7 @@ module PollEverywhere
 
         # Commit the values if they're valid
         def commit
-          @original = @current if valid?
-        end
-
-        # Validations of the property value
-        # TODO this is stubbed out...
-        def valid?
-          true
+          @original = @current
         end
       end
     end
@@ -124,33 +128,29 @@ module PollEverywhere
     module ClassMethods
       # Set or get the root key of the model
       def root_key(name=nil)
-        name ? @name = name.to_sym : @name
+        name ? @root_key = name.to_sym : @root_key
       end
 
       # Define a property at the class level
       def prop(name, &block)
-        prop = props[name]
-        prop.instance_eval(&block) if block
-        prop
+        # Setup instance methods on the class that give us a short cut to the prop values
+        class_eval %{
+          def #{name}=(val)
+            value_set[:#{name}] = val
+          end
+
+          def #{name}
+            value_set[:#{name}]
+          end}
+        
+        prop_set[name].instance_eval(&block) if block
+        # Return the property we just created so we can chain calls
+        prop_set[name]
       end
 
-      # Setup attributes hash and delegate setters/getters to the base class.
-      def props
-        @props ||= Hash.new do |props,name|
-          # Define the methods at the instance level
-          class_eval %{
-            def #{name}=(val)
-              props[:#{name}].current = val
-            end
-
-            def #{name}
-              props[:#{name}].current
-            end}
-          
-          # Setup the attribute class
-          props[name] = Property.new(name)
-
-        end.merge superclass_props
+      # A property set that inherits superclass property sets.
+      def prop_set
+        @prop_set ||= Property::Set.new.merge superclass_prop_set
       end
 
       # Instanciate a class from a hash
@@ -160,26 +160,41 @@ module PollEverywhere
 
     protected
       # Grab attributes from the superclass, clone them, and then we can modify them locally.
-      def superclass_props
-        (superclass.respond_to?(:props) && superclass.props.clone) || {}
+      def superclass_prop_set
+        (superclass.respond_to?(:prop_set) && superclass.prop_set.clone) || Property::Set.new
       end
     end
 
     module InstanceMethods
-      def props
-        @props ||= self.class.props.inject CoreExt::HashWithIndifferentAccess.new do |hash, (name, property)|
-          hash[property.name] = property.value
-          hash
-        end
+      # A value set instance for this class instance
+      def value_set
+        @value_set ||= self.class.prop_set.value_set
+      end
+
+      # Returns a value from the value_set for a property
+      def prop(name)
+        value_set.prop(name)
+      end
+
+      # Figure out if the model changed.
+      def changed?
+        value_set.changed?
       end
 
       def to_hash
-        hash = props.inject CoreExt::HashWithIndifferentAccess.new do |hash, (name, value)|
+        hash = value_set.props.inject CoreExt::HashWithIndifferentAccess.new do |hash, (name, value)|
           hash[name] = self.send(name)
           hash
         end
         # Add a root key if one is specified
         self.class.root_key ? { self.class.root_key => hash } : hash
+      end
+
+      # Debug friendly way to output model state
+      def to_s
+        %(#{self.class.name}(#{value_set.props.map{|name, val|
+          "#{name}:#{'`' if val.changed? }#{val.current.inspect}"
+        }.join(', ')}))
       end
 
       # Set the attributes from a hash

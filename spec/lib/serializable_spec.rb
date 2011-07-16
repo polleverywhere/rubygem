@@ -1,5 +1,69 @@
 require 'spec_helper'
 
+describe PollEverywhere::Serializable do
+  class Animal
+    include PollEverywhere::Serializable
+
+    prop :color
+    prop :smell
+    prop :name
+  end
+
+  class Furry < Animal
+    prop :fuzzy
+  end
+
+  before(:all) do
+    @bear = Furry.new.from_hash({
+      :fuzzy => true,
+      :name => 'Bear',
+      :small => 'awful',
+      :color => 'black'
+    })
+  end
+
+  context "property inheritence" do
+    it "should have subclass property" do
+      @bear.fuzzy.should be_true
+    end
+
+    it "should have superclass property" do
+      @bear.color.should eql('black')
+    end
+  end
+
+  context "property changes" do
+    it "should be changed" do
+      @bear.color = 'brown'
+      @bear.should be_changed
+    end
+  end
+
+  context "commit" do
+    before(:all) do
+      @bear.color = "red"
+      @bear.value_set.commit
+    end
+
+    it "should not be changed after commit" do
+      @bear.should_not be_changed
+    end
+
+    it "should have set current value as old value" do
+      @bear.prop(:color).was.should eql('red')
+    end
+
+    it "should have current value" do
+      @bear.prop(:color).is.should eql('red')
+    end
+
+    it "should not modify the old value" do
+      @bear.color = "green"
+      @bear.prop('color').was.should eql('red')
+      @bear.prop('color').is.should eql('green')
+    end
+  end
+end
 
 describe PollEverywhere::Serializable::Property do
   before(:all) do

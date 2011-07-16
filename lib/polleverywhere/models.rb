@@ -5,11 +5,17 @@ module PollEverywhere # :nodoc
 
       root_key :user
 
-      prop :first_name
+      prop :first_name do
+        description "First name of the participant"
+      end
 
-      prop :last_name
+      prop :last_name do
+        description "Last name of the participant"
+      end
 
-      prop :email
+      prop :email do
+        description "Email address of pariticpant"
+      end
 
       prop :phone_number do
         description %{Phone number associated with the participant.}
@@ -19,7 +25,9 @@ module PollEverywhere # :nodoc
         description %{This is used to identify the participant in reports.}
       end
 
-      prop :password
+      prop :password do
+        description %{Password that the participant may use to login to their account and view their response history.}
+      end
 
       attr_accessor :http
 
@@ -29,6 +37,7 @@ module PollEverywhere # :nodoc
 
       def save
         http.put(to_json).as(:json).to(path).response do |response|
+          value_set.commit
           from_json response.body
         end
       end
@@ -38,12 +47,12 @@ module PollEverywhere # :nodoc
       end
 
       def destroy
-        http.delete(path).response do |response|
+        http.delete.from(path).response do |response|
         end
       end
 
       def path
-        "/participants/#{email}"
+        "/participants/#{prop(:email).was || prop(:email).is}"
       end
 
       def fetch

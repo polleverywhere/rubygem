@@ -26,13 +26,13 @@
     %dd Root key for multiple choice poll data.
     %dd
       %dl
-        -PollEverywhere::MultipleChoicePoll.props.each do |_, prop|
+        -PollEverywhere::MultipleChoicePoll.prop_set.each do |_, prop|
           %dt=prop.name
           %dd=prop.description
           -if prop.name == :options
             %dd
               %dl
-                -PollEverywhere::MultipleChoicePoll::Option.props.each do |_, prop|
+                -PollEverywhere::MultipleChoicePoll::Option.prop_set.each do |_, prop|
                   %dt=prop.name
                   %dd=prop.description
   
@@ -68,7 +68,7 @@
     %dd Root key for free text poll data.
     %dd
       %dl
-        -PollEverywhere::FTP.props.each do |_, prop|
+        -PollEverywhere::FTP.prop_set.each do |_, prop|
           %dt=prop.name
           %dd=prop.description
 
@@ -96,7 +96,7 @@
     %dd Root key for participant data.
     %dd
       %dl
-        -PollEverywhere::Participant.props.each do |_, prop|
+        -PollEverywhere::Participant.prop_set.each do |_, prop|
           %dt=prop.name
           %dd=prop.description
   
@@ -104,12 +104,18 @@
   %p Specify the details of a new participant
   :example
     @participant = PollEverywhere::Participant.from_hash(:email => 'b.obama@whitehouse.gov', :first_name => 'Barack', :last_name => 'Obama', :password => 'mickeymouse', :responding_as => 'Barack').save
-  
+
   %h2 Updating participant details
   :example
-    @participant.first_name = "President"
+    @participant.responding_as = "Mr. President"
     @participant.save
 
+  %h2 Changing an email address
+  %p.http Changing an email address is a slightly special case at an HTTP level because the new email address should be in the body of the participant data and should be <code>PUT</code> to the original email address.
+  :example
+    @participant.email = "mr.president@hotmail.com"
+    @participant.save
+  
   %h2 Delete a Participant
   :example
     @participant.destroy
