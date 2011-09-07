@@ -155,6 +155,18 @@ module PollEverywhere # :nodoc
         end
       end
 
+      def clear
+        if persisted?
+          http.delete(path + "/clear").response do |response|
+            return true
+          end
+
+          return false
+        else
+          false
+        end
+      end
+
       def destroy
         http.delete(path).response do |response|
           self.id = self.permalink = nil

@@ -72,6 +72,11 @@ describe "API" do
         end
       end
 
+      it "should clear results" do
+        @mcp.save
+        @mcp.clear.should be_true
+      end
+
       it "should destroy" do
         @mcp.destroy
         @mcp.id.should be_nil
