@@ -132,7 +132,7 @@ module PollEverywhere # :nodoc
             from_json response.body
           end
         else
-          http.post(to_json).as(:json).to('/multiple_choice_polls').response do |response|
+          http.post(to_json).as(:json).to("/#{self.class.root_key}s").response do |response|
             from_json response.body
           end
         end
