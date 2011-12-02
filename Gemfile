@@ -11,7 +11,3 @@ group :development, :test do
   gem 'ruby-debug19'
   gem 'rake'
 end
-
-group :api_docs do
-  gem 'middleman'
-end
