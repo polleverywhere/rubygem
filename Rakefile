@@ -9,5 +9,9 @@ namespace :ci do
   end
 end
 
+namespace :gem do
+  Bundler::GemHelper.install_tasks
+end
+
 # Spec tasks
 RSpec::Core::RakeTask.new
