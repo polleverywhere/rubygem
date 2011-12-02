@@ -1,3 +1,5 @@
+require 'polleverywhere/version'
+
 module PollEverywhere
   autoload :Configuration,  'polleverywhere/configuration'
   autoload :HTTP,           'polleverywhere/http'
