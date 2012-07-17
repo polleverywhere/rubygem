@@ -155,9 +155,21 @@ module PollEverywhere # :nodoc
         end
       end
 
+      def archive
+        if persisted?
+          http.delete.to(path + "/results/archive").response do |response|
+            return true
+          end
+
+          return false
+        else
+          false
+        end
+      end
+
       def clear
         if persisted?
-          http.delete(path + "/clear").response do |response|
+          http.delete.to(path + "/results").response do |response|
             return true
           end
 
