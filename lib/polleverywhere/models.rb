@@ -185,6 +185,18 @@ module PollEverywhere # :nodoc
         end
       end
 
+      def results
+        if persisted?
+          http.get.to(path + '/results').response do |response|
+            return true
+          end
+
+          return false
+        else
+          false
+        end
+      end
+
       def path
         "/#{self.class.root_key}s/#{permalink}" if persisted?
       end
