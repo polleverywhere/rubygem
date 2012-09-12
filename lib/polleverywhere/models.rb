@@ -26,7 +26,7 @@ module PollEverywhere # :nodoc
       end
 
       prop :private_data do
-        description %{This is used to identify the participant in reports, but access is .}
+        description %{This is used to identify the participant in reports (such as a social security number) where access is limited by the account administrator.}
       end
 
       prop :password do
