@@ -25,8 +25,16 @@ module PollEverywhere # :nodoc
         description %{This is used to identify the participant in reports.}
       end
 
+      prop :private_data do
+        description %{This is used to identify the participant in reports, but access is .}
+      end
+
       prop :password do
         description %{Password that the participant may use to login to their account and view their response history.}
+      end
+
+      prop :account_subuser do
+        description "Optional boolean. Try to make this participant a full subuser (can create polls) on the user account that is calling this API."
       end
 
       attr_accessor :http
