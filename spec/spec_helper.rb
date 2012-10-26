@@ -4,6 +4,6 @@ require 'rspec'
 require 'polleverywhere'
 
 PollEverywhere.config do
-  username      "api_test"
-  password      "api_test"
+  username      "apitest"
+  password      "apitest"
 end
