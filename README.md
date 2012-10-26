@@ -47,7 +47,7 @@ You can do all sorts of fun stuff with polls!
 * **RDocs** - http://rubydoc.info/gems/polleverywhere/frames
 * **Mailing list** - http://groups.google.com/group/polleverywhere-dev
 * **Professional Support** - http://www.polleverywhere.com/professional-support
-* **API & RubyGem Roadmap** - https://github.com/polleverywhere/polleverywhere/issues/milestones
+* **API & RubyGem Roadmap** - https://github.com/polleverywhere/rubygem/issues/milestones
 
 ## Goals & Roadmap
 

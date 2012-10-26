@@ -8,10 +8,10 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Brad Gessler, Steel Fu"]
   s.email       = ["opensource@polleverywhere.com"]
-  s.homepage    = "http://www.github.com/polleverywhere/polleverywhere"
+  s.homepage    = "http://www.github.com/polleverywhere/rubygem"
   s.summary     = %q{Integrate Poll Everywhere into your Ruby applications}
   s.description = %q{An easy way to integrate Poll Everywhere into your Ruby applications.}
-  
+
   s.rubyforge_project = "polleverywhere"
   s.add_dependency "json"
   # TODO get rid of this dependency by using Ruby Net::HTTP
