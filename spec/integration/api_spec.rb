@@ -45,7 +45,7 @@ describe "API" do
           @gotten_mcp.title.should eql(@mcp.title)
         end
       end
-      
+
       context "updates" do
         before(:all) do
           @mcp.title = "My pita bread is moldy"
@@ -56,7 +56,7 @@ describe "API" do
         it "should update options" do
           @mcp.options.first.value.should eql("MOLD SUCKS!")
         end
-        
+
         it "should update title" do
           @mcp.title.should eql("My pita bread is moldy")
         end
@@ -85,6 +85,69 @@ describe "API" do
       it "should destroy" do
         @mcp.destroy
         @mcp.id.should be_nil
+      end
+    end
+
+    context "free text" do
+      before(:all) do
+        @ftp = PollEverywhere::FreeTextPoll.from_hash(:title => 'Got feedback?')
+      end
+
+      context "creation" do
+        before(:all) do
+          @ftp.save
+        end
+
+        it "should have id" do
+          @ftp.id.should_not be_nil
+        end
+
+        it "should have permalink" do
+          @ftp.permalink.should_not be_nil
+        end
+      end
+
+      context "get" do
+        it "should get poll" do
+          @gotten_ftp = PollEverywhere::FreeTextPoll.get(@ftp.permalink)
+          @gotten_ftp.title.should eql(@ftp.title)
+        end
+      end
+
+      context "updates" do
+        before(:all) do
+          @ftp.title = "My pita bread is moldy"
+          @ftp.save
+        end
+
+        it "should update title" do
+          @ftp.title.should eql("My pita bread is moldy")
+        end
+
+        it "should start" do
+          @ftp.start
+          @ftp.state.should eql("opened")
+        end
+
+        it "should stop" do
+          @ftp.stop
+          @ftp.state.should eql("closed")
+        end
+      end
+
+      it "should clear results" do
+        @ftp.save
+        @ftp.clear.should be_true
+      end
+
+      it "should archive results" do
+        @ftp.save
+        @ftp.archive.should be_true
+      end
+
+      it "should destroy" do
+        @ftp.destroy
+        @ftp.id.should be_nil
       end
     end
 

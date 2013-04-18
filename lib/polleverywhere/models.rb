@@ -73,9 +73,9 @@ module PollEverywhere # :nodoc
     # Poll is an abstract base class for multiple choice and free text polls
     class Poll
       include Serializable
-      
+
       prop :id
-      
+
       prop :updated_at do
         description %{The date and time the poll was last updated.}
       end
@@ -163,6 +163,13 @@ module PollEverywhere # :nodoc
         end
       end
 
+      def fetch
+        http.get.from(path).as(:json).response do |response|
+          from_json response.body
+        end
+      end
+
+
       def archive
         if persisted?
           http.delete.to(path + "/results/archive").response do |response|
@@ -220,6 +227,10 @@ module PollEverywhere # :nodoc
       prop :keyword do
         description "The keyword that's used to submit a response to the poll from participants that use SMS."
       end
+
+      def results=(results)
+        # no op
+      end
     end
 
     class MultipleChoicePoll < Poll
@@ -269,12 +280,6 @@ module PollEverywhere # :nodoc
           else
             Option.new(self).from_hash(:value => val.to_s)
           end
-        end
-      end
-
-      def fetch
-        http.get.from(path).as(:json).response do |response|
-          from_json response.body
         end
       end
 
