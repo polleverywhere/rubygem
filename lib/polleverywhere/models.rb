@@ -203,7 +203,7 @@ module PollEverywhere # :nodoc
       def results
         if persisted?
           http.get.to(path + '/results').response do |response|
-            return true
+            return response.body
           end
 
           return false

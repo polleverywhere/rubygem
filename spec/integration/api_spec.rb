@@ -72,6 +72,14 @@ describe "API" do
         end
       end
 
+      it "should retrieve results" do
+        @mcp.save
+
+        lambda {
+          JSON.parse @mcp.results
+        }.should_not raise_error JSON::ParserError
+      end
+
       it "should clear results" do
         @mcp.save
         @mcp.clear.should be_true
@@ -133,6 +141,14 @@ describe "API" do
           @ftp.stop
           @ftp.state.should eql("closed")
         end
+      end
+
+      it "should retrieve results" do
+        @ftp.save
+
+        lambda {
+          JSON.parse @ftp.results
+        }.should_not raise_error JSON::ParserError
       end
 
       it "should clear results" do
