@@ -23,15 +23,15 @@ If you're using bundler, add the following line to your Gemfile:
     end
     
     # Create a multiple choice poll
-    ftp = PollEverywhere::MultipleChoicePoll.new
-    ftp.title = 'Do you love numbers?'
-    ftp.options = %w[1 2 3]
-    ftp.save
+    mcp = PollEverywhere::MultipleChoicePoll.new
+    mcp.title = 'Do you love numbers?'
+    mcp.options = %w[1 2 3]
+    mcp.save
     
     # Create a free text poll    
-    mcp = PollEverywhere::FreeTextPoll.new
-    mcp.title = 'What is your favorite thing about vacation?'
-    mcp.save
+    ftp = PollEverywhere::FreeTextPoll.new
+    ftp.title = 'What is your favorite thing about vacation?'
+    ftp.save
     
     # Now start playing! Get a list of your polls
     polls = PollEverywhere::Poll.all
