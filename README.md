@@ -43,7 +43,7 @@ You can do all sorts of fun stuff with polls!
 
 ## Additional resources
 
-* **API Documentation** - http://api.polleverywhere.com
+* **API Documentation** - https://api.polleverywhere.com
 * **RDocs** - http://rubydoc.info/gems/polleverywhere/frames
 * **Mailing list** - http://groups.google.com/group/polleverywhere-dev
 * **Professional Support** - http://www.polleverywhere.com/professional-support

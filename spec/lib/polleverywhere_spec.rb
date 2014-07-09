@@ -13,8 +13,8 @@ describe "Configuration" do
   end
 
   context "url" do
-    it "should default to 'http://api.polleverywhere.com'" do
-      @config.url.to_s.should eql("http://api.polleverywhere.com")
+    it "should default to 'https://api.polleverywhere.com'" do
+      @config.url.to_s.should eql("https://api.polleverywhere.com")
     end
 
     it "should have URI instance for url configurable attribute" do

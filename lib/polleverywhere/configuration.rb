@@ -9,7 +9,7 @@ module PollEverywhere
 
     # Setup default values for configuration class as instance variables.
     def initialize
-      self.url = "http://api.polleverywhere.com"
+      self.url = "https://api.polleverywhere.com"
       self.http_adapter = :sync
     end
 
