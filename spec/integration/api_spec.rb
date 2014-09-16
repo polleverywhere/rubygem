@@ -75,9 +75,9 @@ describe "API" do
       it "should retrieve results" do
         @mcp.save
 
-        lambda {
+        expect {
           JSON.parse @mcp.results
-        }.should_not raise_error JSON::ParserError
+        }.to_not raise_error
       end
 
       it "should clear results" do
@@ -146,9 +146,9 @@ describe "API" do
       it "should retrieve results" do
         @ftp.save
 
-        lambda {
+        expect {
           JSON.parse @ftp.results
-        }.should_not raise_error JSON::ParserError
+        }.to_not raise_error
       end
 
       it "should clear results" do
