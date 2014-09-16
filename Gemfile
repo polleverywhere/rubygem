@@ -1,13 +1,17 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 # Specify your gem's dependencies in polleverywhere.gemspec
 gemspec
 
 group :development, :test do
-  gem 'guard-rspec'
   gem 'rb-fsevent', :require => false if RUBY_PLATFORM =~ /darwin/i
-  gem 'growl'
-  gem 'rspec'
-  gem 'ruby-debug19'
   gem 'rake'
+end
+
+group :test do
+  gem 'rspec'
+end
+
+group :development do
+  gem 'guard-rspec'
 end
