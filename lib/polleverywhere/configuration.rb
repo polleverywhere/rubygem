@@ -9,7 +9,7 @@ module PollEverywhere
 
     # Setup default values for configuration class as instance variables.
     def initialize
-      self.url = "https://api.polleverywhere.com"
+      self.url = "https://www.polleverywhere.com"
       self.http_adapter = :sync
     end
 
@@ -24,7 +24,7 @@ module PollEverywhere
     end
 
     # Builds an HTTP Basic header for our authentication. Eventually
-    # this form of authorization will be replaced with a token authorization 
+    # this form of authorization will be replaced with a token authorization
     # so that a password is not required.
     def http_basic_credentials
       "Basic #{Base64.encode64("#{username}:#{password}")}".chomp

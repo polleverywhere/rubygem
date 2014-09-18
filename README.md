@@ -15,27 +15,27 @@ If you're using bundler, add the following line to your Gemfile:
 ## Accessing your polls
 
     require 'polleverywhere'
-    
+
     # Specify your username and password here
     PollEverywhere.config do
       username  "my_username"
       password  "my_password"
     end
-    
+
     # Create a multiple choice poll
     mcp = PollEverywhere::MultipleChoicePoll.new
     mcp.title = 'Do you love numbers?'
     mcp.options = %w[1 2 3]
     mcp.save
-    
-    # Create a free text poll    
+
+    # Create a free text poll
     ftp = PollEverywhere::FreeTextPoll.new
     ftp.title = 'What is your favorite thing about vacation?'
     ftp.save
-    
+
     # Now start playing! Get a list of your polls
     polls = PollEverywhere::Poll.all
-    
+
     # ... or grab a specific poll
     mcp2 = PollEverywhere::MultipleChoicePoll.get(':permalink')
 
@@ -43,7 +43,7 @@ You can do all sorts of fun stuff with polls!
 
 ## Additional resources
 
-* **API Documentation** - https://api.polleverywhere.com
+* **API Documentation** - http://api.polleverywhere.com
 * **RDocs** - http://rubydoc.info/gems/polleverywhere/frames
 * **Mailing list** - http://groups.google.com/group/polleverywhere-dev
 * **Professional Support** - http://www.polleverywhere.com/professional-support
