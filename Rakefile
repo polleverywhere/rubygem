@@ -15,3 +15,5 @@ end
 
 # Spec tasks
 RSpec::Core::RakeTask.new
+
+task default: %w[spec]
