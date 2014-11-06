@@ -8,24 +8,24 @@ describe "Configuration" do
   %w[username password].each do |attr|
     it "should have '#{attr}' configurable attribute" do
       @config.send(attr, "test_val")
-      @config.send(attr).should eql("test_val")
+      expect(@config.send(attr)).to eql("test_val")
     end
   end
 
   context "url" do
     it "should default to 'https://www.polleverywhere.com'" do
-      @config.url.to_s.should eql("https://www.polleverywhere.com")
+      expect(@config.url.to_s).to eql("https://www.polleverywhere.com")
     end
 
     it "should have URI instance for url configurable attribute" do
       @config.url = "http://loser.com"
-      @config.url.to_s.should eql("http://loser.com")
-      @config.url.should be_instance_of(URI::HTTP)
+      expect(@config.url.to_s).to eql("http://loser.com")
+      expect(@config.url).to be_instance_of(URI::HTTP)
     end
   end
 
   it "should have a root configuration class" do
-    PollEverywhere.config.should be_instance_of(PollEverywhere::Configuration)
+    expect(PollEverywhere.config).to be_instance_of(PollEverywhere::Configuration)
   end
 end
 
@@ -48,7 +48,7 @@ describe "Multiple Choice Poll" do
     context "serialization" do
       it "should serialize options" do
         @hash[:options].each do |value|
-          @poll.to_hash[:multiple_choice_poll][:options].find{|o| o[:value] == value}.should_not be_nil
+          expect(@poll.to_hash[:multiple_choice_poll][:options].find{|o| o[:value] == value}).not_to be_nil
         end
       end
     end
@@ -61,7 +61,7 @@ describe "Multiple Choice Poll" do
       end
 
       it "should set title" do
-        @poll.title.should eql(@hash[:title])
+        expect(@poll.title).to eql(@hash[:title])
       end
     end
   end

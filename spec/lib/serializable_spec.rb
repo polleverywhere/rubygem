@@ -24,18 +24,18 @@ describe PollEverywhere::Serializable do
 
   context "property inheritence" do
     it "should have subclass property" do
-      @bear.fuzzy.should be_true
+      expect(@bear.fuzzy).to be_truthy
     end
 
     it "should have superclass property" do
-      @bear.color.should eql('black')
+      expect(@bear.color).to eql('black')
     end
   end
 
   context "property changes" do
     it "should be changed" do
       @bear.color = 'brown'
-      @bear.should be_changed
+      expect(@bear).to be_changed
     end
   end
 
@@ -46,21 +46,21 @@ describe PollEverywhere::Serializable do
     end
 
     it "should not be changed after commit" do
-      @bear.should_not be_changed
+      expect(@bear).not_to be_changed
     end
 
     it "should have set current value as old value" do
-      @bear.prop(:color).was.should eql('red')
+      expect(@bear.prop(:color).was).to eql('red')
     end
 
     it "should have current value" do
-      @bear.prop(:color).is.should eql('red')
+      expect(@bear.prop(:color).is).to eql('red')
     end
 
     it "should not modify the old value" do
       @bear.color = "green"
-      @bear.prop('color').was.should eql('red')
-      @bear.prop('color').is.should eql('green')
+      expect(@bear.prop('color').was).to eql('red')
+      expect(@bear.prop('color').is).to eql('green')
     end
   end
 end
@@ -77,12 +77,12 @@ describe PollEverywhere::Serializable::Property do
     
     it "should detect changes" do
       @value.current = "super fun times"
-      @value.should be_changed
+      expect(@value).to be_changed
     end
 
     it "should maintain original value" do
       @value.current = "flimtastical"
-      @value.original.should be_nil
+      expect(@value.original).to be_nil
     end
 
     context "after commit" do
@@ -92,15 +92,15 @@ describe PollEverywhere::Serializable::Property do
       end
 
       it "should not be changed" do
-        @value.should_not be_changed
+        expect(@value).not_to be_changed
       end
 
       it "should have original value" do
-        @value.current.should eql("dog treats")
+        expect(@value.current).to eql("dog treats")
       end
 
       it "should have current value" do
-        @value.current.should eql("dog treats")
+        expect(@value.current).to eql("dog treats")
       end
     end
   end
@@ -112,11 +112,11 @@ describe PollEverywhere::Serializable::Property::Set do
   end
 
   it "should return properties for attributes" do
-    @propset[:first_name].should be_instance_of(PollEverywhere::Serializable::Property)
+    expect(@propset[:first_name]).to be_instance_of(PollEverywhere::Serializable::Property)
   end
 
   it "should return a Value::Set" do
-    @propset.value_set.should be_instance_of(PollEverywhere::Serializable::Property::Value::Set)
+    expect(@propset.value_set).to be_instance_of(PollEverywhere::Serializable::Property::Value::Set)
   end
 end
 
@@ -133,28 +133,28 @@ describe PollEverywhere::Serializable::Property::Value::Set do
       end
 
       it "should have the current value" do
-        @value_set[:email].should eql('brad@bradgessler.com')
+        expect(@value_set[:email]).to eql('brad@bradgessler.com')
       end
 
       it "should have the original value" do
-        @value_set.prop(:email).was.should be_nil
+        expect(@value_set.prop(:email).was).to be_nil
       end
 
       it "should have changes for property value" do
         was, is = @value_set.prop(:email).changes
-        was.should be_nil
-        is.should eql('brad@bradgessler.com')
+        expect(was).to be_nil
+        expect(is).to eql('brad@bradgessler.com')
       end
 
       it "should have changed" do
-        @value_set.prop(:email).should be_changed
+        expect(@value_set.prop(:email)).to be_changed
       end
     end
 
     context "hash" do
       it "should return hash of changed value" do
         @value_set[:email] = 'brad@bradgessler.com'
-        @value_set.changes[:email].should eql([nil, 'brad@bradgessler.com'])
+        expect(@value_set.changes[:email]).to eql([nil, 'brad@bradgessler.com'])
       end
     end
   end

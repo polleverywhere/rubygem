@@ -7,19 +7,19 @@ describe PollEverywhere::Models::Participant do
 
   context "email path" do
     it "should have current email if not commited" do
-      @p.path.should eql('/participants/brad@brad.com')
+      expect(@p.path).to eql('/participants/brad@brad.com')
     end
 
     it "should have old email if committed" do
       @p.save
       @p.email = 'super.duper@something.com'
-      @p.path.should eql('/participants/brad@brad.com')
+      expect(@p.path).to eql('/participants/brad@brad.com')
     end
 
     it "should change email with old email in path" do
       @p.save
       @p.email = 'i.like.emails@something.com'
-      @p.path.should eql('/participants/super.duper@something.com')
+      expect(@p.path).to eql('/participants/super.duper@something.com')
     end
   end
 end

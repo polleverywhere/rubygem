@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe "API" do
+describe "API", :type => :request do
   context "polls" do
     it "should get collection from my poll" do
-      PollEverywhere::Models::Poll.all.should have_at_least(1).items
+      expect(PollEverywhere::Models::Poll.all.size).to be >= 1
     end
 
     context "multiple choice" do
@@ -17,23 +17,23 @@ describe "API" do
         end
 
         it "should have id" do
-          @mcp.id.should_not be_nil
+          expect(@mcp.id).not_to be_nil
         end
 
         it "should have permalink" do
-          @mcp.permalink.should_not be_nil
+          expect(@mcp.permalink).not_to be_nil
         end
 
         context "options" do
           it "should have ids" do
             @mcp.options.each do |o|
-              o.id.should_not be_nil
+              expect(o.id).not_to be_nil
             end
           end
 
           it "should have values" do
             @mcp.options.each do |o|
-              o.value.should_not be_nil
+              expect(o.value).not_to be_nil
             end
           end
         end
@@ -42,7 +42,7 @@ describe "API" do
       context "get" do
         it "should get poll" do
           @gotten_mcp = PollEverywhere::MultipleChoicePoll.get(@mcp.permalink)
-          @gotten_mcp.title.should eql(@mcp.title)
+          expect(@gotten_mcp.title).to eql(@mcp.title)
         end
       end
 
@@ -54,21 +54,21 @@ describe "API" do
         end
 
         it "should update options" do
-          @mcp.options.first.value.should eql("MOLD SUCKS!")
+          expect(@mcp.options.first.value).to eql("MOLD SUCKS!")
         end
 
         it "should update title" do
-          @mcp.title.should eql("My pita bread is moldy")
+          expect(@mcp.title).to eql("My pita bread is moldy")
         end
 
         it "should start" do
           @mcp.start
-          @mcp.state.should eql("opened")
+          expect(@mcp.state).to eql("opened")
         end
 
         it "should stop" do
           @mcp.stop
-          @mcp.state.should eql("closed")
+          expect(@mcp.state).to eql("closed")
         end
       end
 
@@ -82,17 +82,17 @@ describe "API" do
 
       it "should clear results" do
         @mcp.save
-        @mcp.clear.should be_true
+        expect(@mcp.clear).to be_truthy
       end
 
       it "should archive results" do
         @mcp.save
-        @mcp.archive.should be_true
+        expect(@mcp.archive).to be_truthy
       end
 
       it "should destroy" do
         @mcp.destroy
-        @mcp.id.should be_nil
+        expect(@mcp.id).to be_nil
       end
     end
 
@@ -107,18 +107,18 @@ describe "API" do
         end
 
         it "should have id" do
-          @ftp.id.should_not be_nil
+          expect(@ftp.id).not_to be_nil
         end
 
         it "should have permalink" do
-          @ftp.permalink.should_not be_nil
+          expect(@ftp.permalink).not_to be_nil
         end
       end
 
       context "get" do
         it "should get poll" do
           @gotten_ftp = PollEverywhere::FreeTextPoll.get(@ftp.permalink)
-          @gotten_ftp.title.should eql(@ftp.title)
+          expect(@gotten_ftp.title).to eql(@ftp.title)
         end
       end
 
@@ -129,17 +129,17 @@ describe "API" do
         end
 
         it "should update title" do
-          @ftp.title.should eql("My pita bread is moldy")
+          expect(@ftp.title).to eql("My pita bread is moldy")
         end
 
         it "should start" do
           @ftp.start
-          @ftp.state.should eql("opened")
+          expect(@ftp.state).to eql("opened")
         end
 
         it "should stop" do
           @ftp.stop
-          @ftp.state.should eql("closed")
+          expect(@ftp.state).to eql("closed")
         end
       end
 
@@ -153,17 +153,17 @@ describe "API" do
 
       it "should clear results" do
         @ftp.save
-        @ftp.clear.should be_true
+        expect(@ftp.clear).to be_truthy
       end
 
       it "should archive results" do
         @ftp.save
-        @ftp.archive.should be_true
+        expect(@ftp.archive).to be_truthy
       end
 
       it "should destroy" do
         @ftp.destroy
-        @ftp.id.should be_nil
+        expect(@ftp.id).to be_nil
       end
     end
 
