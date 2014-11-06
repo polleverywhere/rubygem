@@ -2,6 +2,8 @@
 
 The Poll Everywhere gem is the best way to integrate Poll Everywhere with your applications.
 
+[![Build Status](https://travis-ci.org/polleverywhere/rubygem.svg)](https://travis-ci.org/polleverywhere/rubygem)
+
 ## Getting Started
 
 Install the Poll Everywhere rubygem:
