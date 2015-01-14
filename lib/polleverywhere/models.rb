@@ -172,7 +172,7 @@ module PollEverywhere # :nodoc
 
       def archive
         if persisted?
-          http.delete.to(path + "/results/archive").response do |response|
+          http.delete.from(path + "/results/archive").response do |response|
             return true
           end
 
@@ -184,7 +184,7 @@ module PollEverywhere # :nodoc
 
       def clear
         if persisted?
-          http.delete.to(path + "/results").response do |response|
+          http.delete.from(path + "/results").response do |response|
             return true
           end
 
@@ -195,7 +195,7 @@ module PollEverywhere # :nodoc
       end
 
       def destroy
-        http.delete(path).response do |response|
+        http.delete.from(path).response do |response|
           self.id = self.permalink = nil
         end
       end

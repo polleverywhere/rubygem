@@ -7,12 +7,15 @@ describe "API", :type => :request do
     end
 
     context "multiple choice" do
-      before(:all) do
+      before do
         @mcp = PollEverywhere::MultipleChoicePoll.from_hash(:title => 'Hey dude!', :options => %w[red blue green])
+      end
+      after do
+        @mcp.destroy if @mcp.id
       end
 
       context "creation" do
-        before(:all) do
+        before do
           @mcp.save
         end
 
@@ -41,13 +44,14 @@ describe "API", :type => :request do
 
       context "get" do
         it "should get poll" do
+          @mcp.save
           @gotten_mcp = PollEverywhere::MultipleChoicePoll.get(@mcp.permalink)
           expect(@gotten_mcp.title).to eql(@mcp.title)
         end
       end
 
       context "updates" do
-        before(:all) do
+        before do
           @mcp.title = "My pita bread is moldy"
           @mcp.options.first.value = "MOLD SUCKS!"
           @mcp.save
@@ -97,12 +101,15 @@ describe "API", :type => :request do
     end
 
     context "free text" do
-      before(:all) do
+      before do
         @ftp = PollEverywhere::FreeTextPoll.from_hash(:title => 'Got feedback?')
+      end
+      after do
+        @ftp.destroy if @ftp.id
       end
 
       context "creation" do
-        before(:all) do
+        before do
           @ftp.save
         end
 
@@ -117,13 +124,14 @@ describe "API", :type => :request do
 
       context "get" do
         it "should get poll" do
+          @ftp.save
           @gotten_ftp = PollEverywhere::FreeTextPoll.get(@ftp.permalink)
           expect(@gotten_ftp.title).to eql(@ftp.title)
         end
       end
 
       context "updates" do
-        before(:all) do
+        before do
           @ftp.title = "My pita bread is moldy"
           @ftp.save
         end
