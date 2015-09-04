@@ -45,7 +45,7 @@ You can do all sorts of fun stuff with polls!
 
 ## Additional resources
 
-* **API Documentation** - http://api.polleverywhere.com
+* **API Documentation** - https://api.polleverywhere.com
 * **RDocs** - http://rubydoc.info/gems/polleverywhere/frames
 * **Mailing list** - http://groups.google.com/group/polleverywhere-dev
 * **Professional Support** - http://www.polleverywhere.com/professional-support
@@ -64,4 +64,4 @@ In the future, you can expect:
 
 ## Professional Development & Support
 
-If you'd like for us to implement part of Poll Everywhere as a documented API or RubyGem and you don't see it on here, please engage our professional support services at http://www.polleverywhere.com/onsite-and-dedicated-support#custom_solutions.
+If you'd like for us to implement part of Poll Everywhere as a documented API or RubyGem and you don't see it on here, please engage our professional support services at https://www.polleverywhere.com/onsite-and-dedicated-support#custom_solutions.
