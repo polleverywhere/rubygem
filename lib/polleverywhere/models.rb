@@ -112,6 +112,10 @@ module PollEverywhere # :nodoc
         description %{Allow participants to respond to the poll through the obscufated permalink.}
       end
 
+      prop :simple_keywords do
+        description %{True if using Presenter Session. False if using global keywords or auto-generated codes.}
+      end
+
       attr_accessor :http
 
       def initialize(http=PollEverywhere.http)
