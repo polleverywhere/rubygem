@@ -7,7 +7,7 @@ module PollEverywhere
     def self.adapter(name, &block)
       Adapter.registry[name].new(&block)
     end
-    
+
     # Simple HTTP request/response objects for our adapter and DSL
     class Request < Struct.new(:method, :url, :headers, :body)
       def to_curl

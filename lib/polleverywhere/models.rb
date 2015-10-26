@@ -206,7 +206,7 @@ module PollEverywhere # :nodoc
 
       def results
         if persisted?
-          http.get.to(path + '/results').response do |response|
+          http.get(format: :json).to(path + '/results').response do |response|
             return response.body
           end
 

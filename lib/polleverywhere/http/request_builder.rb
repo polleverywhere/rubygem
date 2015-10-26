@@ -1,6 +1,6 @@
 module PollEverywhere
   module HTTP # :nodoc
-    # DSL for building requests within our application that build a Request object and send them to 
+    # DSL for building requests within our application that build a Request object and send them to
     # an adapter to fulfill the request.
     class RequestBuilder
       attr_accessor :method, :body, :headers, :params, :url, :format, :response, :adapter, :base_url
@@ -8,12 +8,12 @@ module PollEverywhere
       def initialize(adapter=PollEverywhere.config.http_adapter, base_url=PollEverywhere.config.url)
         self.adapter = adapter
         self.base_url = base_url
-        self.headers = { 
+        self.headers = {
           'Content-Type' => 'application/json',
           'Accept' => 'application/json',
           'Authorization' => PollEverywhere.config.http_basic_credentials
         }
-        
+
         yield self if block_given?
       end
 
@@ -39,6 +39,13 @@ module PollEverywhere
 
       # Specify the URL of the request.
       def to(url)
+        if self.params.any?
+          symbol = "?"
+          self.params.each do |k, v|
+            url += "#{symbol}#{k}=#{v}"
+            symbol = "&"
+          end
+        end
         self.url = url
         self
       end
@@ -54,7 +61,7 @@ module PollEverywhere
         Request.new(method, url_for(url), headers, body)
       end
 
-      # Generate a Request object, send it to an adapter, and have it fullfill the response by 
+      # Generate a Request object, send it to an adapter, and have it fullfill the response by
       # yielding a Response object.
       def response(&block)
         adapter.execute request, &block
