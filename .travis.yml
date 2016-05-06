@@ -6,3 +6,6 @@ rvm:
   - 2.1.3
 
 bundler_args: --without development
+
+before_install:
+  gem install bundler -v 1.11.1
