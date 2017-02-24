@@ -1,4 +1,4 @@
-from ruby:2.1.6
+FROM ruby:2.1.6
 
 RUN mkdir -p /app/lib/polleverywhere/
 WORKDIR /app
