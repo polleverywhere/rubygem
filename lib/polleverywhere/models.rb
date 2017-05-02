@@ -101,7 +101,7 @@ module PollEverywhere # :nodoc
       end
 
       prop :twitter_enabled do
-        description %{Allow participants to respond to the poll with Twitter.}
+        description %{Allow participants to respond to the poll with Twitter - deprecated.}
       end
 
       prop :web_enabled do
