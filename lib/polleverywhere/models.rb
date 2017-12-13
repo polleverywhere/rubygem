@@ -116,6 +116,12 @@ module PollEverywhere # :nodoc
         description %{True if using Presenter Session. False if using global keywords or auto-generated codes.}
       end
 
+      prop :current 
+
+      def current?
+        current
+      end
+
       attr_accessor :http
 
       def initialize(http=PollEverywhere.http)
@@ -152,6 +158,16 @@ module PollEverywhere # :nodoc
 
       def self.get(permalink)
         from_hash(:permalink => permalink).fetch
+      end
+
+      def make_current
+        http.post(:permalink => permalink).to("/my/polls/current").response do |response|
+          response.status == 204  # no response expected for success
+        end
+      end
+
+      def stop_current
+        # FIXME
       end
 
       def self.all
