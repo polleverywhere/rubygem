@@ -157,11 +157,11 @@ module PollEverywhere # :nodoc
       def self.all
         PollEverywhere.http.get.from("/my/polls").as(:json).response do |response|
           ::JSON.parse(response.body).map do |hash|
-            case hash.keys.first.to_sym
+            case hash['type'].to_sym
             when MCP.root_key
               MCP.from_hash(hash)
             when FTP.root_key
-              MCP.from_hash(hash)
+              FTP.from_hash(hash)
             end
           end
         end
