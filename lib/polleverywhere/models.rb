@@ -116,6 +116,17 @@ module PollEverywhere # :nodoc
         description %{True if using Presenter Session. False if using global keywords or auto-generated codes.}
       end
 
+      prop :current 
+      prop :registered_participants_only
+
+      def current?
+        current
+      end
+
+      def registered_participants_only?
+        registered_participants_only
+      end
+
       attr_accessor :http
 
       def initialize(http=PollEverywhere.http)
@@ -154,14 +165,31 @@ module PollEverywhere # :nodoc
         from_hash(:permalink => permalink).fetch
       end
 
+      def make_current
+        req = http.post(:id => id).to("/my/polls/current")
+        req.headers['Content-Type'] = "application/x-www-form-urlencoded; charset=UTF-8"
+        req.headers['Accept'] = "application/json"
+        req.response do |response|
+          response.status == 204  # no response expected for success
+        end
+      end
+
+      def stop_current
+        req = PollEverywhere.http.post.to("/my/polls/current")
+        req.base_url = "https://www.polleverywhere.com"
+        req.headers['Content-Type'] = "application/x-www-form-urlencoded; charset=UTF-8"
+        req.headers['Accept'] = "application/json"
+        req.response
+      end
+
       def self.all
         PollEverywhere.http.get.from("/my/polls").as(:json).response do |response|
           ::JSON.parse(response.body).map do |hash|
-            case hash.keys.first.to_sym
+            case hash['type'].to_sym
             when MCP.root_key
               MCP.from_hash(hash)
             when FTP.root_key
-              MCP.from_hash(hash)
+              FTP.from_hash(hash)
             end
           end
         end
@@ -169,10 +197,10 @@ module PollEverywhere # :nodoc
 
       def fetch
         http.get.from(path).as(:json).response do |response|
+          puts response.body
           from_json response.body
         end
       end
-
 
       def archive
         if persisted?
@@ -207,13 +235,22 @@ module PollEverywhere # :nodoc
       def results
         if persisted?
           http.get.to(path + '/results').response do |response|
-            return response.body
+              return JSON.parse(response.body)
           end
 
-          return false
+          return nil
         else
-          false
+          nil
         end
+      end
+
+      def tabulated_results
+          r = self.results
+          return {} if r.nil?
+          arr = r.collect do |rhash|
+              rhash['value']
+          end
+          arr.uniq.collect { |el| [el, arr.count(el)] }.to_h
       end
 
       def path
