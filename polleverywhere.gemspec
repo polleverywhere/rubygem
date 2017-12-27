@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "polleverywhere"
   s.add_dependency "json"
   # TODO get rid of this dependency by using Ruby Net::HTTP
-  s.add_dependency "rest-client", "~> 1.6.3"
+  s.add_dependency "rest-client", "~> 1.8.0"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
