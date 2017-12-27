@@ -161,7 +161,7 @@ module PollEverywhere # :nodoc
             when MCP.root_key
               MCP.from_hash(hash)
             when FTP.root_key
-              MCP.from_hash(hash)
+              FTP.from_hash(hash)
             end
           end
         end
